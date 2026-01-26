@@ -1,0 +1,315 @@
+{
+  "courses": [
+    {
+      "id": "beginner-hatha-flexibility",
+      "title": "Хатха йога за начинаещи - Гъвкавост",
+      "level": "beginner",
+      "style": "hatha",
+      "focus": "flexibility",
+      "duration": 30,
+      "description": "Мек курс за начинаещи, фокусиран върху подобряване на гъвкавостта",
+      "asanas": [
+        {
+          "id": "tadasana",
+          "name": "Тадасана (Поза на планината)",
+          "description": "Основна стояща поза, която подобрява осанката и баланса",
+          "benefits": [
+            "Подобрява осанката",
+            "Укрепва краката и коремните мускули",
+            "Подобрява баланса",
+            "Намалява плоскостопието"
+          ],
+          "executionTime": 60,
+          "image": "https://wp.insighttimer.com/blog/wp-content/uploads/2020/02/savasana-in-yoga.jpg"
+        },
+        {
+          "id": "uttanasana",
+          "name": "Утанасана (Наклон напред)",
+          "description": "Стъпване напред с разпънати крака, разтягане на задните мускули",
+          "benefits": [
+            "Разтяга задните мускули на бедрата",
+            "Успокоява ума",
+            "Подобрява храносмилането",
+            "Намалява стрес и тревожност"
+          ],
+          "executionTime": 90,
+          "image": "https://amfmtreatment.com/wp-content/uploads/2019/12/ways-to-fight-depression.jpg"
+        },
+        {
+          "id": "adho-mukha-svanasana",
+          "name": "Адхо Мукха Шванасана (Соба нагоре)",
+          "description": "Класическа поза, която разтяга цялото тяло",
+          "benefits": [
+            "Укрепва ръцете и раменете",
+            "Разтяга задните мускули",
+            "Подобрява кръвообращението",
+            "Успокоява мозъка"
+          ],
+          "executionTime": 120,
+          "image": "https://imgk.timesnownews.com/story/balasana.gif?tr=w-1200,h-900"
+        },
+        {
+          "id": "baddha-konasana",
+          "name": "Бадха Конасана (Поза на бабочката)",
+          "description": "Седаща поза с разтворени коленете, разтягане на бедрата",
+          "benefits": [
+            "Разтяга бедрата и тазовите мускули",
+            "Подобрява флексибилността на таза",
+            "Стимулира сърцето",
+            "Намалява умората"
+          ],
+          "executionTime": 90,
+          "image": "https://media1.popsugar-assets.com/files/thumbor/ebaqskJLKf_TJ-C_qJR2yS3Ctvo/fit-in/1024x1024/filters:format_auto-!!-:strip_icc-!!-/2016/10/31/649/n/1922729/84005cd0581756accefb01.88164494_edit_img_image_7676437_1453065000/i/Learn-How-Do-Handstand.jpg"
+        },
+        {
+          "id": "janu-sirsasana",
+          "name": "Джану Ширшасана (Поза глава към коляно)",
+          "description": "Седаща поза с едно сгънато коляно, наклон към разпънатия крак",
+          "benefits": [
+            "Разтяга задните мускули и гръбначния стълб",
+            "Успокоява ума",
+            "Подобрява храносмилането",
+            "Намалява безсъние"
+          ],
+          "executionTime": 90,
+          "image": "https://static.toiimg.com/thumb/msid-80369745/80369745.jpg?width=500&resizemode=4"
+        }
+      ]
+    },
+    {
+      "id": "beginner-yin-flexibility",
+      "title": "Йин йога - Дълбоко разтягане",
+      "level": "beginner",
+      "style": "yin",
+      "focus": "flexibility",
+      "duration": 60,
+      "description": "Медлен и спокоен курс за дълбоко разтягане и релаксация",
+      "asanas": [
+        {
+          "id": "supta-baddha-konasana",
+          "name": "Супта Бадха Конасана (Лежаща поза на бабочката)",
+          "description": "Релаксираща поза в легнало положение с разтворени коленете",
+          "benefits": [
+            "Разтяга бедрата и таза",
+            "Успокоява нервната система",
+            "Намалява стрес",
+            "Подобрява флексибилността"
+          ],
+          "executionTime": 300,
+          "image": "https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900"
+        },
+        {
+          "id": "dragon-pose",
+          "name": "Поза на дракона",
+          "description": "Дълбоко разтягане на бедрените мускули в позиция на лунге",
+          "benefits": [
+            "Разтяга бедрените мускули",
+            "Отваря тазовия регион",
+            "Укрепва краката",
+            "Подобрява баланса"
+          ],
+          "executionTime": 180,
+          "image": "https://www.healthshots.com/wp-content/uploads/2020/10/yoga-for-weight-loss-halasana.jpg"
+        },
+        {
+          "id": "sphinx-pose",
+          "name": "Поза на сфинкса",
+          "description": "Лека обратна поза в легнало положение, разтягаща гръбначния стълб",
+          "benefits": [
+            "Разтяга гръбначния стълб",
+            "Укрепва долната част на гръба",
+            "Отваря гръдния кош",
+            "Успокоява ума"
+          ],
+          "executionTime": 240,
+          "image": "https://www.fitsri.com/wp-content/uploads/2019/12/siddhasana-accomplished-pose.jpg"
+        },
+        {
+          "id": "butterfly-fold",
+          "name": "Сгъване на бабочката",
+          "description": "Седаща поза с наклон напред, разтягаща бедрата и гръба",
+          "benefits": [
+            "Разтяга бедрата и гръбначния стълб",
+            "Успокоява нервната система",
+            "Намалява тревожност",
+            "Подобрява флексибилността"
+          ],
+          "executionTime": 300,
+          "image": "https://images.herzindagi.info/image/2021/Apr/abs-from-yogamain_g.jpg"
+        },
+        {
+          "id": "sleeping-sw-twist",
+          "name": "Лежаща усукване",
+          "description": "Релаксираща поза с усукване на гръбначния стълб в легнало положение",
+          "benefits": [
+            "Разтяга гръбначния стълб",
+            "Подобрява храносмилането",
+            "Успокоява нервната система",
+            "Освобождава напрежението в гърба"
+          ],
+          "executionTime": 240,
+          "image": "https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900"
+        }
+      ]
+    },
+    {
+      "id": "beginner-restorative-relaxation",
+      "title": "Ресторативна йога - Релаксация",
+      "level": "beginner",
+      "style": "restorative",
+      "focus": "relaxation",
+      "duration": 40,
+      "description": "Мек курс за релаксация и възстановяване",
+      "asanas": [
+        {
+          "id": "savasana",
+          "name": "Шавасана (Поза на трупа)",
+          "description": "Финална релаксираща поза в легнало положение",
+          "benefits": [
+            "Релаксира цялото тяло",
+            "Намалява стрес и тревожност",
+            "Подобрява съня",
+            "Възстановява енергията"
+          ],
+          "executionTime": 600,
+          "image": "https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900"
+        },
+        {
+          "id": "supported-bridge",
+          "name": "Поддържана поза на моста",
+          "description": "Релаксираща обратна поза с поддръжка",
+          "benefits": [
+            "Разтяга гръдния кош",
+            "Успокоява нервната система",
+            "Намалява напрежението в гърба",
+            "Релаксира тялото"
+          ],
+          "executionTime": 300,
+          "image": "https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900"
+        },
+        {
+          "id": "legs-up-wall",
+          "name": "Крака на стената",
+          "description": "Релаксираща поза с крака, опрени на стена",
+          "benefits": [
+            "Намалява отеци в краката",
+            "Успокоява нервната система",
+            "Релаксира долната част на гърба",
+            "Подобрява кръвообращението"
+          ],
+          "executionTime": 300,
+          "image": "https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900"
+        },
+        {
+          "id": "child-pose",
+          "name": "Баласана (Поза на детето)",
+          "description": "Релаксираща поза в клекнало положение",
+          "benefits": [
+            "Разтяга бедрата и глезените",
+            "Успокоява ума",
+            "Намалява стрес",
+            "Релаксира гръбначния стълб"
+          ],
+          "executionTime": 180,
+          "image": "https://images.herzindagi.info/image/2021/Apr/abs-from-yogamain_g.jpg"
+        },
+        {
+          "id": "reclining-bound-angle",
+          "name": "Лежаща свързана поза на ъгъла",
+          "description": "Релаксираща поза в легнало положение с разтворени коленете",
+          "benefits": [
+            "Разтяга бедрата и таза",
+            "Успокоява нервната система",
+            "Релаксира тялото",
+            "Намалява тревожност"
+          ],
+          "executionTime": 300,
+          "image": "https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900"
+        }
+      ]
+    },
+    {
+      "id": "beginner-vinyasa-strength",
+      "title": "Виняса йога за начинаещи - Сила",
+      "level": "beginner",
+      "style": "vinyasa",
+      "focus": "strength",
+      "duration": 35,
+      "description": "Мек динамичен курс за начинаещи, фокусиран върху изграждане на основна сила",
+      "asanas": [
+        {
+          "id": "plank-pose",
+          "name": "Пхалакасана (Поза на планката)",
+          "description": "Основна поза за укрепване на корема и горната част на тялото",
+          "benefits": [
+            "Укрепва коремните мускули",
+            "Укрепва ръцете и раменете",
+            "Подобрява осанката",
+            "Тонизира цялото тяло"
+          ],
+          "executionTime": 30,
+          "image": "https://static.toiimg.com/thumb/msid-80369745/80369745.jpg?width=500&resizemode=4"
+        },
+        {
+          "id": "warrior-i",
+          "name": "Вирабхадрасана I (Воин I)",
+          "description": "Силна стояща поза, укрепваща краката и корема",
+          "benefits": [
+            "Укрепва краката и глезените",
+            "Укрепва коремните мускули",
+            "Разтяга бедрата и слабините",
+            "Подобрява баланса"
+          ],
+          "executionTime": 60,
+          "image": "https://wp.insighttimer.com/blog/wp-content/uploads/2020/02/savasana-in-yoga.jpg"
+        },
+        {
+          "id": "warrior-ii",
+          "name": "Вирабхадрасана II (Воин II)",
+          "description": "Стояща поза, укрепваща краката и разтягаща бедрата",
+          "benefits": [
+            "Укрепва краката",
+            "Разтяга бедрата и слабините",
+            "Подобрява баланса",
+            "Тонизира цялото тяло"
+          ],
+          "executionTime": 60,
+          "image": "https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900"
+        },
+        {
+          "id": "low-lunge",
+          "name": "Анджанеясана (Поза на лунге)",
+          "description": "Стояща поза в позиция на лунге, укрепваща краката",
+          "benefits": [
+            "Укрепва краката",
+            "Разтяга бедрените мускули",
+            "Укрепва корема",
+            "Подобрява баланса"
+          ],
+          "executionTime": 60,
+          "image": "https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900"
+        },
+        {
+          "id": "chair-pose",
+          "name": "Уткатасана (Поза на стола)",
+          "description": "Стояща поза, наподобяваща седене на стул, укрепваща краката",
+          "benefits": [
+            "Укрепва краката и глезените",
+            "Тонизира тазовите мускули",
+            "Подобрява баланса",
+            "Разтяга гръдния кош"
+          ],
+          "executionTime": 60,
+          "image": "https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900"
+        }
+      ]
+    }
+  ],
+  "futureFeatures": {
+    "faceYoga": {
+      "note": "Йога за лице ще бъде добавена в бъдеще",
+      "description": "Специални упражнения за лицеви мускули и кожа"
+    }
+  }
+}
+
