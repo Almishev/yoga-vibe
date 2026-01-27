@@ -1,13 +1,17 @@
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AsanaListItem({ asana }) {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate('AsanaDetails', { asana });
+  };
+
   return (
     <Pressable 
       style={styles.asanaContainer}
-      onPress={() => {
-        // TODO: Добави навигация към детайли за асаната
-        console.log('Pressed asana:', asana.name);
-      }}
+      onPress={handlePress}
     >
       <Image 
         source={{ uri: asana.image }} 

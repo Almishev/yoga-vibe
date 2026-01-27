@@ -1,13 +1,11 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 
-export default function CourseListItem({ course, asanaCount }) {
+export default function CourseListItem({ course, asanaCount, onPress }) {
   return (
     <Pressable 
       style={styles.courseContainer}
-      onPress={() => {
-        // TODO: Добави навигация към детайли за курса
-        console.log('Pressed course:', course.title);
-      }}
+      onPress={onPress}
+  
     >
       <Text style={styles.courseTitle}>{course.title}</Text>
       <Text style={styles.courseSubtitle}>

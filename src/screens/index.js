@@ -1,80 +1,153 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SectionList } from 'react-native';
-import exercises from '../../assets/data/exercises.json';
-import AsanaListItem from '../componenets/AsanaListItem';
-import CourseListItem from '../componenets/CourseListItem';
+import { StyleSheet, Text, View, Image, Pressable, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 export default function HomeScreen() {
-  
-  // Подготвяме данните за SectionList - всеки курс е секция с асаните като данни
-  const sections = exercises.courses.map(course => ({
-    title: course.title,
-    data: course.asanas,
-    courseInfo: {
-      id: course.id,
-      style: course.style,
-      focus: course.focus,
-      duration: course.duration,
-      description: course.description
-    }
-  }));
+  const navigation = useNavigation();
 
-  const totalAsanas = sections.reduce((sum, section) => sum + section.data.length, 0);
+  const handleGetStarted = () => {
+    navigation.navigate('Courses');
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Yoga Vibe с Веселина Маркова</Text>
-      <Text style={styles.subheader}>
-        {exercises.courses.length} курса • {totalAsanas} асани
-      </Text>
-      
-      <SectionList
-        sections={sections}
-        renderItem={({ item }) => <AsanaListItem asana={item} />}
-        renderSectionHeader={({ section }) => (
-          <CourseListItem 
-            course={{
-              title: section.title,
-              style: section.courseInfo.style,
-              focus: section.courseInfo.focus,
-              duration: section.courseInfo.duration,
-              description: section.courseInfo.description
-            }}
-            asanaCount={section.data.length}
-          />
-        )}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContainer}
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        stickySectionHeadersEnabled={false}
-      />
+      >
+        <View style={styles.heroSection}>
+          <Image
+            source={{ uri: 'https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900' }}
+            style={styles.heroImage}
+            resizeMode="cover"
+          />
+          <View style={styles.heroOverlay}>
+            <View style={styles.teacherSection}>
+              <Text style={styles.teacherName}>Василена Маркова</Text>
+              <View style={styles.teacherInfo}>
+                <Text style={styles.teacherLine}>🧘‍♀️ Учител по йога 🧘‍♀️</Text>
+                <Text style={styles.teacherLine}>🔮 Езотерика 🪬</Text>
+                <Text style={styles.teacherLine}>🫀 Енергийна медицина 🧠</Text>
+                <Text style={styles.teacherLine}>🌌 Космоенергетика 🌌</Text>
+              </View>
+            </View>
+            
+            <View style={styles.heroTextContainer}>
+              <Text style={styles.heroTitle}>Добре дошли</Text>
+              <Text style={styles.heroSubtitle}>
+                Готови ли сте за практика днес?
+              </Text>
+              <Pressable 
+                style={styles.getStartedButton}
+                onPress={handleGetStarted}
+              >
+                <Text style={styles.getStartedButtonText}>Започнете сега</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
       
-      <StatusBar style="auto" />
-    </View>
+      <StatusBar style="light" />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    paddingTop: 50,
+    backgroundColor: '#000',
   },
-  header: {
-    fontSize: 24,
+  scrollContent: {
+    flexGrow: 1,
+  },
+  heroSection: {
+    flex: 1,
+    position: 'relative',
+    minHeight: '100%',
+  },
+  heroImage: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  heroOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+  },
+  heroTextContainer: {
+    alignItems: 'center',
+    maxWidth: '90%',
+  },
+  heroTitle: {
+    fontSize: 42,
     fontWeight: 'bold',
+    color: '#fff',
     textAlign: 'center',
-    marginBottom: 5,
+    marginBottom: 16,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  heroSubtitle: {
+    fontSize: 20,
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 32,
+    lineHeight: 28,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
+  },
+  getStartedButton: {
+    backgroundColor: '#fff',
+    paddingVertical: 16,
+    paddingHorizontal: 40,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  getStartedButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
     color: '#333',
   },
-  subheader: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 20,
-    color: '#666',
+  teacherSection: {
+    alignItems: 'center',
+    marginTop: 20,
   },
-  listContainer: {
-    padding: 10,
-    paddingBottom: 20,
+  teacherName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 12,
+    textAlign: 'center',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  teacherInfo: {
+    alignItems: 'center',
+    gap: 8,
+  },
+  teacherLine: {
+    fontSize: 16,
+    color: '#fff',
+    textAlign: 'center',
+    lineHeight: 22,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
 });
