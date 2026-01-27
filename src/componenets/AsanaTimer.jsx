@@ -88,11 +88,11 @@ export default function AsanaTimer({ initialSeconds }) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: 10,
   },
   timerCircle: {
     width: 200,
-    height: 100,
+    height: 65,
     borderRadius: 100,
     backgroundColor: '#4CAF50',
     justifyContent: 'center',

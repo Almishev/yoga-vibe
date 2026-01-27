@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   scrollContent: {
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   asanaImage: {
     width: '100%',

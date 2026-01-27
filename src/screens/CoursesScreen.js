@@ -53,12 +53,12 @@ const styles = StyleSheet.create({
   subheader: {
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
     color: '#666',
   },
   listContainer: {
     padding: 10,
-    paddingBottom: 30,
+    paddingBottom: 10,
   },
 });
 
