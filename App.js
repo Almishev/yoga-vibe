@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
+import { NavigationContainer, CommonActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { AuthProvider, useAuth } from './src/context/AuthContext';
 import HomeScreen from './src/screens/index';
 import CoursesScreen from './src/screens/CoursesScreen';
 import CourseDetailsScreen from './src/screens/CourseDetailsScreen';
@@ -61,11 +62,11 @@ function HomeStackNavigator() {
   );
 }
 
-function AuthStackNavigator({ loggedIn, setLoggedIn }) {
+function AuthStackNavigator() {
   const insets = useSafeAreaInsets();
+  const { isAuthenticated } = useAuth();
 
-  if (loggedIn) {
-    // Прост екран за LogOut, когато потребителят е "логнат"
+  if (isAuthenticated) {
     return (
       <ProfileScreen />
     );
@@ -84,21 +85,19 @@ function AuthStackNavigator({ loggedIn, setLoggedIn }) {
       <AuthStack.Screen 
         name="LoginMain" 
         options={{ title: 'Вход' }}
-      >
-        {(props) => <LoginScreen {...props} setLoggedIn={setLoggedIn} />}
-      </AuthStack.Screen>
+        component={LoginScreen}
+      />
       <AuthStack.Screen 
         name="Register" 
         options={{ title: 'Регистрация' }}
-      >
-        {(props) => <RegisterScreen {...props} setLoggedIn={setLoggedIn} />}
-      </AuthStack.Screen>
+        component={RegisterScreen}
+      />
     </AuthStack.Navigator>
   );
 }
 
 function MainTabs() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   return (
     <Tab.Navigator
@@ -118,7 +117,7 @@ function MainTabs() {
           } else if (route.name === 'ProfileTab') {
             iconName = 'person-outline';
           } else if (route.name === 'AuthTab') {
-            iconName = loggedIn ? 'log-out-outline' : 'log-in-outline';
+            iconName = isAuthenticated ? 'log-out-outline' : 'log-in-outline';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -128,6 +127,29 @@ function MainTabs() {
       <Tab.Screen 
         name="HomeTab" 
         options={{ title: 'Home' }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            const state = navigation.getState();
+            const homeTabRoute = state.routes.find(r => r.name === 'HomeTab');
+            
+            if (homeTabRoute?.state?.index !== 0 || homeTabRoute?.state?.routes[0]?.name !== 'Home') {
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [
+                    {
+                      name: 'HomeTab',
+                      state: {
+                        routes: [{ name: 'Home' }],
+                        index: 0,
+                      },
+                    },
+                  ],
+                })
+              );
+            }
+          },
+        })}
       >
         {() => <HomeStackNavigator />}
       </Tab.Screen>
@@ -138,14 +160,9 @@ function MainTabs() {
       />
       <Tab.Screen 
         name="AuthTab" 
-        options={{ title: loggedIn ? 'LogOut' : 'Login' }}
+        options={{ title: isAuthenticated ? 'LogOut' : 'Login' }}
       >
-        {() => (
-          <AuthStackNavigator 
-            loggedIn={loggedIn} 
-            setLoggedIn={setLoggedIn} 
-          />
-        )}
+        {() => <AuthStackNavigator />}
       </Tab.Screen>
     </Tab.Navigator>
   );
@@ -154,9 +171,11 @@ function MainTabs() {
 export default function App() {
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
-        <MainTabs />
-      </NavigationContainer>
+      <AuthProvider>
+        <NavigationContainer>
+          <MainTabs />
+        </NavigationContainer>
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }

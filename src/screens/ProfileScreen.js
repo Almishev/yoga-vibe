@@ -1,18 +1,49 @@
+import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../context/AuthContext';
+import { logoutUser } from '../services/authService';
 import Profile from '../componenets/Profile';
 
 export default function ProfileScreen() {
-  // По-късно тук ще взимаме истински данни за потребителя (от Firebase или друг бекенд)
-  const user = null;
+  const navigation = useNavigation();
+  const { user } = useAuth();
 
   const handleEdit = () => {
-    // По желание: навигация към екран за редакция на профил
-    console.log('Edit profile press');
+  };
+
+  const handleLogout = async () => {
+    Alert.alert(
+      'Изход',
+      'Сигурни ли сте, че искате да излезете?',
+      [
+        {
+          text: 'Отказ',
+          style: 'cancel',
+        },
+        {
+          text: 'Излез',
+          style: 'destructive',
+          onPress: async () => {
+            const result = await logoutUser();
+            if (result.error) {
+              Alert.alert('Грешка', result.error);
+            } else {
+              navigation.navigate('HomeTab');
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#f5f5f5' }} edges={['top', 'bottom']}>
-      <Profile user={user} onEdit={handleEdit} />
+      <Profile 
+        user={user} 
+        onEdit={handleEdit} 
+        onLogout={handleLogout}
+      />
     </SafeAreaView>
   );
 }

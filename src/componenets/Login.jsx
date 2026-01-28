@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function Login({ onSubmit, onGoToRegister }) {
+export default function Login({ onSubmit, onGoToRegister, loading = false }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = () => {
-    if (onSubmit) {
+    if (onSubmit && !loading) {
       onSubmit({ email, password });
     }
   };
@@ -61,8 +61,14 @@ export default function Login({ onSubmit, onGoToRegister }) {
           </View>
         </View>
 
-        <Pressable style={styles.primaryButton} onPress={handleSubmit}>
-          <Text style={styles.primaryButtonText}>Влез</Text>
+        <Pressable 
+          style={[styles.primaryButton, loading && styles.primaryButtonDisabled]} 
+          onPress={handleSubmit}
+          disabled={loading}
+        >
+          <Text style={styles.primaryButtonText}>
+            {loading ? 'Влизане...' : 'Влез'}
+          </Text>
         </Pressable>
 
         <View style={styles.footerRow}>
@@ -110,38 +116,55 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+    borderWidth: 1.5,
+    borderColor: '#e0e0e0',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
   passwordRow: {
   },
   label: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 6,
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 8,
   },
   input: {
     flex: 1,
     paddingVertical: 0,
     color: '#333',
+    fontSize: 16,
   },
   eyeButton: {
     marginLeft: 8,
+    padding: 4,
   },
   primaryButton: {
-    marginTop: 8,
-    backgroundColor: '#fff',
-    paddingVertical: 14,
-    borderRadius: 999,
+    marginTop: 24,
+    backgroundColor: '#4CAF50',
+    paddingVertical: 16,
+    borderRadius: 12,
     alignItems: 'center',
+    shadowColor: '#4CAF50',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  primaryButtonDisabled: {
+    opacity: 0.6,
   },
   primaryButtonText: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: 'bold',
-    color: '#111',
+    color: '#fff',
+    letterSpacing: 0.5,
   },
   footerRow: {
     flexDirection: 'row',

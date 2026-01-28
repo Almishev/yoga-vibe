@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-export default function Profile({ user, onEdit }) {
+export default function Profile({ user, onEdit, onLogout }) {
   const displayUser = user || {
     name: 'Гост',
     email: 'guest@yogavibe.app',
@@ -37,9 +37,22 @@ export default function Profile({ user, onEdit }) {
           </View>
         </View>
 
-        <Pressable style={styles.editButton} onPress={onEdit}>
-          <Text style={styles.editButtonText}>Редактирай профил</Text>
-        </Pressable>
+        {user ? (
+          <>
+            <Pressable style={styles.editButton} onPress={onEdit}>
+              <Text style={styles.editButtonText}>Редактирай профил</Text>
+            </Pressable>
+            {onLogout && (
+              <Pressable style={styles.logoutButton} onPress={onLogout}>
+                <Text style={styles.logoutButtonText}>Излез</Text>
+              </Pressable>
+            )}
+          </>
+        ) : (
+          <Pressable style={styles.editButton} onPress={onEdit}>
+            <Text style={styles.editButtonText}>Влез в акаунт</Text>
+          </Pressable>
+        )}
       </View>
     </View>
   );
@@ -140,6 +153,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#111',
+  },
+  logoutButton: {
+    marginTop: 12,
+    backgroundColor: '#ff4444',
+    paddingVertical: 14,
+    borderRadius: 999,
+    alignItems: 'center',
+  },
+  logoutButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
 
