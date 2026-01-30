@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../contexts/auth';
 import { logoutUser } from '../services/authService';
 import Profile from '../componenets/Profile';
 

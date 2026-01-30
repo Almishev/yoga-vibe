@@ -1,65 +1,81 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-export default function CourseListItem({ course, asanaCount, onPress }) {
+export default function CourseListItem({ course, asanaCount, onPress, featured = false }) {
   return (
-    <Pressable 
-      style={styles.courseContainer}
+    <TouchableOpacity 
+      style={[styles.container, featured && styles.featuredContainer]}
       onPress={onPress}
-  
+      activeOpacity={0.7}
     >
-      <Text style={styles.courseTitle}>{course.title}</Text>
-      <Text style={styles.courseSubtitle}>
-        <Text style={styles.subValue}>{course.style}</Text> •{' '}
-        <Text style={styles.subValue}>{course.focus}</Text> •{' '}
-        <Text style={styles.subValue}>{course.duration} мин</Text>
-      </Text>
-      <Text style={styles.courseDescription}>{course.description}</Text>
-      <Text style={styles.asanaCount}>{asanaCount} асани</Text>
-    </Pressable>
+      <View style={styles.content}>
+        <Text style={styles.title}>{course.title}</Text>
+        <View style={styles.metaRow}>
+          <Text style={styles.metaText}>
+            {course.style} • {course.focus} • {course.duration} мин
+          </Text>
+        </View>
+        {course.description && (
+          <Text style={styles.description} numberOfLines={featured ? 2 : 3}>
+            {course.description}
+          </Text>
+        )}
+        <Text style={styles.asanaCount}>{asanaCount} асани</Text>
+      </View>
+      {!featured && <Text style={styles.arrow}>›</Text>}
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  courseContainer: {
+  container: {
     backgroundColor: '#fff',
-    padding: 15,
-    marginBottom: 10,
-    borderRadius: 10,
-    marginHorizontal: 2,
+    borderRadius: 12,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    marginBottom: 12,
   },
-  courseTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
+  featuredContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  content: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '600',
     color: '#333',
-    marginBottom: 5,
+    marginBottom: 4,
   },
-  courseSubtitle: {
-    fontSize: 16,
-    color: '#666',
+  metaRow: {
     marginBottom: 8,
+  },
+  metaText: {
+    fontSize: 13,
+    color: '#666',
     textTransform: 'capitalize',
   },
-  courseDescription: {
-    fontSize: 16,
+  description: {
+    fontSize: 14,
     color: '#555',
-    marginBottom: 8,
     lineHeight: 20,
+    marginBottom: 8,
   },
   asanaCount: {
-    fontSize: 14,
-    color: '#888',
-    fontStyle: 'italic',
+    fontSize: 13,
+    color: '#9B59B6',
+    fontWeight: '600',
   },
-  subValue: {
-    textTransform: 'capitalize',
+  arrow: {
+    fontSize: 24,
+    color: '#ccc',
+    marginLeft: 8,
   },
 });
-

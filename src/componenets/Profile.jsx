@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import Button from './Button';
 
 export default function Profile({ user, onEdit, onLogout }) {
   const displayUser = user || {
@@ -19,7 +20,10 @@ export default function Profile({ user, onEdit, onLogout }) {
           <View style={styles.headerText}>
             <Text style={styles.name}>{displayUser.name}</Text>
             <Text style={styles.email}>{displayUser.email}</Text>
-            <Text style={styles.level}>Ниво: {displayUser.level}</Text>
+            <View style={styles.levelContainer}>
+              <Text style={styles.levelLabel}>Ниво:</Text>
+              <Text style={styles.level}>{displayUser.level}</Text>
+            </View>
           </View>
         </View>
 
@@ -39,19 +43,27 @@ export default function Profile({ user, onEdit, onLogout }) {
 
         {user ? (
           <>
-            <Pressable style={styles.editButton} onPress={onEdit}>
-              <Text style={styles.editButtonText}>Редактирай профил</Text>
-            </Pressable>
+            <Button
+              title="Редактирай профил"
+              onPress={onEdit}
+              variant="outline"
+              style={styles.editButton}
+            />
             {onLogout && (
-              <Pressable style={styles.logoutButton} onPress={onLogout}>
-                <Text style={styles.logoutButtonText}>Излез</Text>
-              </Pressable>
+              <Button
+                title="Излез"
+                onPress={onLogout}
+                style={styles.logoutButton}
+              />
             )}
           </>
         ) : (
-          <Pressable style={styles.editButton} onPress={onEdit}>
-            <Text style={styles.editButtonText}>Влез в акаунт</Text>
-          </Pressable>
+          <Button
+            title="Влез в акаунт"
+            onPress={onEdit}
+            variant="outline"
+            style={styles.editButton}
+          />
         )}
       </View>
     </View>
@@ -87,15 +99,20 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#9B59B6',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16,
+    shadowColor: '#9B59B6',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
   },
   avatarText: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#fff',
   },
   headerText: {
     flex: 1,
@@ -111,17 +128,30 @@ const styles = StyleSheet.create({
     color: '#666',
     marginBottom: 4,
   },
+  levelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  levelLabel: {
+    fontSize: 14,
+    color: '#666',
+    marginRight: 4,
+  },
   level: {
     fontSize: 14,
-    color: '#333',
+    color: '#9B59B6',
+    fontWeight: '600',
   },
   section: {
     marginBottom: 24,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#f0f0f0',
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    color: '#9B59B6',
     marginBottom: 12,
   },
   statsRow: {
@@ -131,11 +161,16 @@ const styles = StyleSheet.create({
   stat: {
     flex: 1,
     marginRight: 12,
+    backgroundColor: '#f8f8f8',
+    padding: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e8e0f0',
   },
   statNumber: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#9B59B6',
     marginBottom: 4,
   },
   statLabel: {
@@ -144,28 +179,9 @@ const styles = StyleSheet.create({
   },
   editButton: {
     marginTop: 8,
-    backgroundColor: '#fff',
-    paddingVertical: 14,
-    borderRadius: 999,
-    alignItems: 'center',
-  },
-  editButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#111',
   },
   logoutButton: {
     marginTop: 12,
     backgroundColor: '#ff4444',
-    paddingVertical: 14,
-    borderRadius: 999,
-    alignItems: 'center',
-  },
-  logoutButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
   },
 });
-
-

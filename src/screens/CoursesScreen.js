@@ -1,37 +1,58 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 import exercises from '../../assets/data/exercises.json';
 import CourseListItem from '../componenets/CourseListItem';
+import EmptyState from '../componenets/EmptyState';
 
 export default function CoursesScreen() {
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
 
   const handleCoursePress = (course) => {
     navigation.navigate('CourseDetails', { course });
   };
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1000);
+  };
+
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <Text style={styles.header}>Yoga Vibe с Веселина Маркова</Text>
-      <Text style={styles.subheader}>
-        {exercises.courses.length} курса
-      </Text>
-      
-      <FlatList
-        data={exercises.courses}
-        renderItem={({ item }) => (
-          <CourseListItem 
-            course={item}
-            asanaCount={item.asanas.length}
-            onPress={() => handleCoursePress(item)}
-          />
-        )}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContainer}
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         showsVerticalScrollIndicator={false}
-      />
+      >
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Yoga Vibe</Text>
+          <Text style={styles.headerSubtitle}>
+            {exercises.courses.length} курса с Веселина Маркова
+          </Text>
+        </View>
+
+        <View style={styles.section}>
+          {exercises.courses.length > 0 ? (
+            exercises.courses.map((course) => (
+              <CourseListItem
+                key={course.id}
+                course={course}
+                asanaCount={course.asanas.length}
+                onPress={() => handleCoursePress(course)}
+              />
+            ))
+          ) : (
+            <EmptyState
+              icon="🧘‍♀️"
+              title="Няма налични курсове"
+              subtitle="В момента няма добавени курсове. Проверете отново по-късно."
+            />
+          )}
+        </View>
+      </ScrollView>
       
       <StatusBar style="auto" />
     </SafeAreaView>
@@ -41,24 +62,32 @@ export default function CoursesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f8f8f8',
+  },
+  scrollView: {
+    flex: 1,
   },
   header: {
-    fontSize: 24,
+    backgroundColor: '#9B59B6',
+    padding: 24,
+    paddingTop: 16,
+    paddingBottom: 28,
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+  },
+  headerTitle: {
+    fontSize: 28,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 5,
-    color: '#333',
+    color: '#fff',
+    marginBottom: 8,
   },
-  subheader: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 10,
-    color: '#666',
+  headerSubtitle: {
+    fontSize: 14,
+    color: '#fff',
+    opacity: 0.9,
   },
-  listContainer: {
-    padding: 10,
-    paddingBottom: 10,
+  section: {
+    padding: 16,
+    paddingBottom: 8,
   },
 });
-

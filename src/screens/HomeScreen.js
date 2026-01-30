@@ -1,13 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, Pressable, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable, ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
 
   const handleGetStarted = () => {
     navigation.navigate('Courses');
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1000);
   };
 
   return (
@@ -15,6 +22,7 @@ export default function HomeScreen() {
       <ScrollView 
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <View style={styles.heroSection}>
           <Image
@@ -112,7 +120,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 40,
     borderRadius: 30,
-    shadowColor: '#000',
+    borderWidth: 2,
+    borderColor: '#9B59B6',
+    shadowColor: '#9B59B6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
@@ -121,7 +131,7 @@ const styles = StyleSheet.create({
   getStartedButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#9B59B6',
   },
   teacherSection: {
     alignItems: 'center',

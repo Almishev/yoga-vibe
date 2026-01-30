@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Button from './Button';
 
 export default function Register({ onSubmit, onGoToLogin, loading = false }) {
   const [name, setName] = useState('');
@@ -75,15 +76,12 @@ export default function Register({ onSubmit, onGoToLogin, loading = false }) {
           </View>
         </View>
 
-        <Pressable 
-          style={[styles.primaryButton, loading && styles.primaryButtonDisabled]} 
+        <Button
+          title={loading ? 'Регистриране...' : 'Създай акаунт'}
           onPress={handleSubmit}
           disabled={loading}
-        >
-          <Text style={styles.primaryButtonText}>
-            {loading ? 'Регистриране...' : 'Създай акаунт'}
-          </Text>
-        </Pressable>
+          style={styles.primaryButton}
+        />
 
         <View style={styles.footerRow}>
           <Text style={styles.footerText}>Вече имаш акаунт?</Text>
@@ -161,24 +159,11 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     marginTop: 24,
-    backgroundColor: '#4CAF50',
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    shadowColor: '#4CAF50',
+    shadowColor: '#9B59B6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 5,
-  },
-  primaryButtonDisabled: {
-    opacity: 0.6,
-  },
-  primaryButtonText: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: '#fff',
-    letterSpacing: 0.5,
   },
   footerRow: {
     flexDirection: 'row',
@@ -191,7 +176,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   footerLink: {
-    color: '#007AFF',
+    color: '#9B59B6',
     fontWeight: '600',
   },
 });

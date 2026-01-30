@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function AsanaListItem({ asana }) {
@@ -9,74 +9,64 @@ export default function AsanaListItem({ asana }) {
   };
 
   return (
-    <Pressable 
-      style={styles.asanaContainer}
+    <TouchableOpacity 
+      style={styles.container}
       onPress={handlePress}
+      activeOpacity={0.7}
     >
       <Image 
         source={{ uri: asana.image }} 
-        style={styles.asanaImage}
+        style={styles.image}
         resizeMode="cover"
       />
-      <View style={styles.asanaContent}>
-        <Text style={styles.asanaName}>{asana.name}</Text>
-        <Text style={styles.asanaDescription}>{asana.description}</Text>
-        <Text style={styles.asanaBenefits}>{asana.benefits.join(', ')}</Text>
-        <Text style={styles.asanaSubtitle}>
-          <Text style={styles.subValue}>Време: {asana.executionTime}с</Text>
-        </Text>
+      <View style={styles.content}>
+        <Text style={styles.title}>{asana.name}</Text>
+        {asana.description && (
+          <Text style={styles.subtitle} numberOfLines={2}>
+            {asana.description}
+          </Text>
+        )}
+        <Text style={styles.time}>{asana.executionTime} секунди</Text>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  asanaContainer: {
+  container: {
     backgroundColor: '#fff',
-    borderRadius: 10,
-    marginHorizontal: 2,
-    marginBottom: 12,
+    borderRadius: 12,
     overflow: 'hidden',
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    marginBottom: 12,
   },
-  asanaImage: {
+  image: {
     width: '100%',
-    height: 250,
+    height: 180,
     backgroundColor: '#f0f0f0',
   },
-  asanaContent: {
-    padding: 10,
-    gap: 5,
+  content: {
+    padding: 12,
   },
-  asanaName: {
-    fontSize: 20,
-    fontWeight: '500',
-  },
-  asanaDescription: {
+  title: {
     fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 13,
     color: '#666',
-    marginTop: 5,
-    marginBottom: 5,
+    marginBottom: 6,
+    lineHeight: 18,
   },
-  asanaBenefits: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 5,
-    marginBottom: 5,
-  },
-  asanaSubtitle: {
-    color: 'dimgray',
-    fontSize: 16,
-  },
-  subValue: {
-    textTransform: 'capitalize',
+  time: {
+    fontSize: 13,
+    color: '#9B59B6',
+    fontWeight: '600',
   },
 });
-

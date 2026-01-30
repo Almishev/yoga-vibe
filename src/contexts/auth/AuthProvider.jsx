@@ -1,8 +1,7 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { onAuthStateChange } from '../services/authService';
-import { getUserData, createUserData } from '../services/userService';
-
-const AuthContext = createContext({});
+import React, { useState, useEffect, useContext } from 'react';
+import { onAuthStateChange } from '../../services/authService';
+import { getUserData, createUserData } from '../../services/userService';
+import AuthContext from './AuthContext';
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -12,7 +11,7 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider = ({ children }) => {
+export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -59,4 +58,5 @@ export const AuthProvider = ({ children }) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+}
+

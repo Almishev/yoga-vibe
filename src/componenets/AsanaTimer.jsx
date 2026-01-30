@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 65,
     borderRadius: 100,
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#9B59B6',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   startButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#9B59B6',
   },
   pauseButton: {
     backgroundColor: '#FF9800',

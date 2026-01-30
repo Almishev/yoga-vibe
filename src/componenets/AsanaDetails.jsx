@@ -6,26 +6,30 @@ export default function AsanaDetails({ asana }) {
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScrollView 
-        contentContainerStyle={styles.scrollContent}
+        style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
         <Image 
           source={{ uri: asana.image }} 
-          style={styles.asanaImage}
+          style={styles.image}
           resizeMode="cover"
         />
         
-        <View style={styles.contentContainer}>
-          <Text style={styles.asanaName}>{asana.name}</Text>
+        <View style={styles.content}>
+          {asana.description && (
+            <Text style={styles.description}>{asana.description}</Text>
+          )}
           
-          <AsanaTimer initialSeconds={asana.executionTime} />
-          
-          <View style={styles.infoSection}>
-            <Text style={styles.sectionTitle}>Описание</Text>
-            <Text style={styles.sectionText}>{asana.description}</Text>
+          <View style={styles.divider} />
+
+          <View style={styles.timerSection}>
+            <Text style={styles.sectionLabel}>Време за практика</Text>
+            <AsanaTimer initialSeconds={asana.executionTime} />
           </View>
 
-          <View style={styles.infoSection}>
+          <View style={styles.divider} />
+
+          <View style={styles.benefitsSection}>
             <Text style={styles.sectionTitle}>Ползи</Text>
             {asana.benefits.map((benefit, index) => (
               <View key={index} style={styles.benefitItem}>
@@ -33,11 +37,6 @@ export default function AsanaDetails({ asana }) {
                 <Text style={styles.benefitText}>{benefit}</Text>
               </View>
             ))}
-          </View>
-
-          <View style={styles.infoSection}>
-            <Text style={styles.sectionTitle}>Време за изпълнение</Text>
-            <Text style={styles.sectionText}>{asana.executionTime} секунди</Text>
           </View>
         </View>
       </ScrollView>
@@ -48,40 +47,47 @@ export default function AsanaDetails({ asana }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#fff',
   },
-  scrollContent: {
-    paddingBottom: 10,
+  scrollView: {
+    flex: 1,
   },
-  asanaImage: {
+  image: {
     width: '100%',
-    height: 300,
+    height: 250,
     backgroundColor: '#f0f0f0',
   },
-  contentContainer: {
-    backgroundColor: '#fff',
+  content: {
     padding: 20,
-    marginTop: 10,
   },
-  asanaName: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 20,
+  description: {
+    fontSize: 15,
+    color: '#666',
+    lineHeight: 22,
+    marginBottom: 8,
   },
-  infoSection: {
-    marginBottom: 25,
+  divider: {
+    height: 1,
+    backgroundColor: '#e0e0e0',
+    marginVertical: 16,
   },
-  sectionTitle: {
-    fontSize: 20,
+  timerSection: {
+    marginBottom: 8,
+  },
+  sectionLabel: {
+    fontSize: 16,
     fontWeight: '600',
     color: '#333',
-    marginBottom: 10,
+    marginBottom: 8,
   },
-  sectionText: {
-    fontSize: 16,
-    color: '#555',
-    lineHeight: 24,
+  benefitsSection: {
+    marginBottom: 8,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 12,
   },
   benefitItem: {
     flexDirection: 'row',
@@ -89,16 +95,15 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   bullet: {
-    fontSize: 18,
-    color: '#666',
+    fontSize: 16,
+    color: '#9B59B6',
     marginRight: 10,
     marginTop: 2,
   },
   benefitText: {
-    fontSize: 16,
-    color: '#555',
+    fontSize: 15,
+    color: '#666',
     flex: 1,
-    lineHeight: 24,
+    lineHeight: 22,
   },
 });
-
