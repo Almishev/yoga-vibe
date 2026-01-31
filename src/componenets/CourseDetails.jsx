@@ -1,9 +1,37 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useState, useEffect } from 'react';
+import { getAsanasByCourseId } from '../services/asanaService';
 import AsanaListItem from './AsanaListItem';
 import EmptyState from './EmptyState';
 
 export default function CourseDetails({ course }) {
+  const [asanas, setAsanas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadAsanas = async () => {
+      if (!course?.id) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setError(null);
+        const asanasData = await getAsanasByCourseId(course.id);
+        setAsanas(asanasData);
+      } catch (err) {
+        console.error('Error loading asanas:', err);
+        setError('Грешка при зареждане на асаните');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAsanas();
+  }, [course?.id]);
+
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScrollView 
@@ -19,13 +47,24 @@ export default function CourseDetails({ course }) {
           {course.description && (
             <Text style={styles.description}>{course.description}</Text>
           )}
-          <Text style={styles.asanaCount}>{course.asanas.length} асани</Text>
+          <Text style={styles.asanaCount}>{asanas.length} асани</Text>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Асани в курса</Text>
-          {course.asanas.length > 0 ? (
-            course.asanas.map((asana) => (
+          {loading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#9B59B6" />
+              <Text style={styles.loadingText}>Зареждане на асани...</Text>
+            </View>
+          ) : error ? (
+            <EmptyState
+              icon="⚠️"
+              title="Грешка"
+              subtitle={error}
+            />
+          ) : asanas.length > 0 ? (
+            asanas.map((asana) => (
               <AsanaListItem key={asana.id} asana={asana} />
             ))
           ) : (
@@ -87,5 +126,15 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#333',
     marginBottom: 12,
+  },
+  loadingContainer: {
+    padding: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 14,
+    color: '#666',
   },
 });
