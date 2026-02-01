@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 250,
+    aspectRatio: 3 / 4, // Вертикални снимки (3:4 съотношение)
     backgroundColor: '#f0f0f0',
   },
   content: {

@@ -14,7 +14,7 @@ export default function AboutScreen() {
         <View style={styles.header}>
           <View style={styles.profileContainer}>
             <Image
-              source={{ uri: 'https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900' }}
+              source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/yoga-vibe-4bdc3.firebasestorage.app/o/asanas%2F1769984232249_IMG_1608.jpeg?alt=media&token=630cba57-cb9d-4e51-a26c-c63ba92e43f5' }}
               style={styles.profileImage}
               resizeMode="cover"
             />

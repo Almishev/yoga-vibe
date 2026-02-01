@@ -26,7 +26,7 @@ export default function HomeScreen() {
       >
         <View style={styles.heroSection}>
           <Image
-            source={{ uri: 'https://imgk.timesnownews.com/story/bridge-pose.gif?tr=w-1200,h-900' }}
+            source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/yoga-vibe-4bdc3.firebasestorage.app/o/asanas%2FIMG-20260129-WA0001%20(1).jpg?alt=media&token=e2539c16-1912-4274-b486-f333becd0cca' }}
             style={styles.heroImage}
             resizeMode="cover"
           />
