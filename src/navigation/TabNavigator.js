@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/auth';
 import HomeStackNavigator from './HomeStackNavigator';
 import AuthStackNavigator from './AuthStackNavigator';
-import ProfileScreen from '../screens/ProfileScreen';
+import ProfileStackNavigator from './ProfileStackNavigator';
 import AboutScreen from '../screens/AboutScreen';
 
 const Tab = createBottomTabNavigator();
@@ -77,8 +77,9 @@ export default function TabNavigator() {
       <Tab.Screen 
         name="ProfileTab" 
         options={{ title: 'Профил' }}
-        component={ProfileScreen}
-      />
+      >
+        {() => <ProfileStackNavigator />}
+      </Tab.Screen>
       <Tab.Screen 
         name="AuthTab" 
         options={{ title: isAuthenticated ? 'LogOut' : 'Login' }}

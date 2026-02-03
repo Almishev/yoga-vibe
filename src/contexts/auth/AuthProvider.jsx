@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { onAuthStateChange } from '../../services/authService';
 import { getUserData, createUserData } from '../../services/userService';
+import { auth } from '../../services/firebase';
 import AuthContext from './AuthContext';
 
 export const useAuth = () => {
@@ -15,46 +16,55 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const loadUserData = async (firebaseUser) => {
+    if (firebaseUser) {
+      const { data: userDataFromFirestore } = await getUserData(firebaseUser.uid);
+      
+      let userData = {
+        uid: firebaseUser.uid,
+        email: firebaseUser.email,
+        name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Потребител',
+      };
+
+      if (userDataFromFirestore) {
+        userData = {
+          ...userData,
+          ...userDataFromFirestore,
+          name: userDataFromFirestore.name || userData.name,
+        };
+      } else {
+        await createUserData(firebaseUser.uid, {
+          name: userData.name,
+          email: userData.email,
+        });
+      }
+
+      setUser(userData);
+    } else {
+      setUser(null);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChange(async (firebaseUser) => {
-      if (firebaseUser) {
-        const { data: userDataFromFirestore } = await getUserData(firebaseUser.uid);
-        
-        let userData = {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Потребител',
-          level: 'Начинаещ',
-        };
-
-        if (userDataFromFirestore) {
-          userData = {
-            ...userData,
-            ...userDataFromFirestore,
-            name: userDataFromFirestore.name || userData.name,
-          };
-        } else {
-          await createUserData(firebaseUser.uid, {
-            name: userData.name,
-            email: userData.email,
-            level: 'Начинаещ',
-          });
-        }
-
-        setUser(userData);
-      } else {
-        setUser(null);
-      }
-      setLoading(false);
+      await loadUserData(firebaseUser);
     });
 
     return () => unsubscribe();
   }, []);
 
+  const refreshUser = async () => {
+    if (auth.currentUser) {
+      await loadUserData(auth.currentUser);
+    }
+  };
+
   const value = {
     user,
     loading,
     isAuthenticated: !!user,
+    refreshUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function AsanaTimer({ initialSeconds }) {
+export default function AsanaTimer({ initialSeconds, onComplete }) {
   const [seconds, setSeconds] = useState(initialSeconds);
   const [isRunning, setIsRunning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -14,6 +15,9 @@ export default function AsanaTimer({ initialSeconds }) {
           if (prevSeconds <= 1) {
             setIsRunning(false);
             setIsCompleted(true);
+            if (onComplete) {
+              onComplete();
+            }
             return 0;
           }
           return prevSeconds - 1;
@@ -30,7 +34,7 @@ export default function AsanaTimer({ initialSeconds }) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning, seconds]);
+  }, [isRunning, seconds, onComplete]);
 
   const handleStart = () => {
     setIsRunning(true);
@@ -55,12 +59,19 @@ export default function AsanaTimer({ initialSeconds }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.timerCircle}>
+      <View style={[
+        styles.timerCircle,
+        isCompleted && styles.timerCircleCompleted
+      ]}>
         <Text style={styles.timerText}>{formatTime(seconds)}</Text>
-        {isCompleted && (
-          <Text style={styles.completedText}>Готово! 🎉</Text>
-        )}
       </View>
+
+      {isCompleted && (
+        <View style={styles.completedBadge}>
+          <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
+          <Text style={styles.completedText}>Практиката е завършена</Text>
+        </View>
+      )}
 
       <View style={styles.controlsContainer}>
         {!isRunning && !isCompleted && (
@@ -107,15 +118,32 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
   },
+  timerCircleCompleted: {
+    backgroundColor: '#4CAF50',
+  },
   timerText: {
     fontSize: 42,
     fontWeight: 'bold',
     color: '#fff',
   },
+  completedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E8F5E9',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 4,
+  },
   completedText: {
-    fontSize: 16,
-    color: '#fff',
-    marginTop: 5,
+    fontSize: 14,
+    color: '#2E7D32',
+    marginLeft: 8,
     fontWeight: '600',
   },
   controlsContainer: {

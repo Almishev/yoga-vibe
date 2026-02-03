@@ -3,7 +3,8 @@ import {
   signInWithEmailAndPassword, 
   signOut,
   onAuthStateChanged,
-  updateProfile
+  updateProfile,
+  deleteUser
 } from 'firebase/auth';
 import { auth } from './firebase';
 
@@ -104,5 +105,31 @@ export const onAuthStateChange = (callback) => {
 
 export const getCurrentUser = () => {
   return auth.currentUser;
+};
+
+export const deleteUserAccount = async () => {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      return { error: 'Няма влязъл потребител' };
+    }
+    
+    await deleteUser(user);
+    return { error: null };
+  } catch (error) {
+    let errorMessage = error.message;
+    
+    if (error.code) {
+      switch (error.code) {
+        case 'auth/requires-recent-login':
+          errorMessage = 'За да изтриете профила, моля влезте отново.';
+          break;
+        default:
+          errorMessage = error.message || 'Възникна грешка при изтриването на профила.';
+      }
+    }
+    
+    return { error: errorMessage };
+  }
 };
 

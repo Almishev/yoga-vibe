@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from './firebase';
 
 export const getUserData = async (userId) => {
@@ -37,6 +37,16 @@ export const updateUserData = async (userId, updates) => {
       ...updates,
       updatedAt: new Date().toISOString(),
     });
+    return { error: null };
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
+export const deleteUserData = async (userId) => {
+  try {
+    const userRef = doc(db, 'users', userId);
+    await deleteDoc(userRef);
     return { error: null };
   } catch (error) {
     return { error: error.message };

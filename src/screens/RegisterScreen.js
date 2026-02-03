@@ -22,7 +22,7 @@ export default function RegisterScreen() {
         Alert.alert('Грешка', result.error);
         setLoading(false);
       } else {
-        navigation.navigate('HomeTab');
+        navigation.navigate('ProfileTab');
       }
     } catch (error) {
       Alert.alert('Грешка', error.message || 'Възникна грешка при регистрацията.');
