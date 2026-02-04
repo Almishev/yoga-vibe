@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Button from './Button';
 
@@ -27,9 +27,16 @@ export default function Profile({ user, onEdit, onLogout, onDelete, completedCou
       <View style={styles.card}>
         <View style={styles.headerRow}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              {displayUser.name?.charAt(0)?.toUpperCase() || 'Г'}
-            </Text>
+            {displayUser.photoURL ? (
+              <Image 
+                source={{ uri: displayUser.photoURL }} 
+                style={styles.avatarImage}
+              />
+            ) : (
+              <Text style={styles.avatarText}>
+                {displayUser.name?.charAt(0)?.toUpperCase() || 'Г'}
+              </Text>
+            )}
           </View>
           <View style={styles.headerText}>
             <Text style={styles.name}>{displayUser.name}</Text>
@@ -179,6 +186,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 4,
+    overflow: 'hidden',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
   },
   avatarText: {
     fontSize: 28,

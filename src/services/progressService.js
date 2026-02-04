@@ -10,12 +10,10 @@ import {
 import { db } from './firebase';
 import { getAsanasByCourseId } from './asanaService';
 
-/**
- * Mark asana as completed
- */
+
 export const markAsanaAsCompleted = async (userId, asanaId, courseId, executionTime) => {
   try {
-    // Path: users/{userId}/completedAsanas/{asanaId}
+   
     const asanaRef = doc(db, 'users', userId, 'completedAsanas', asanaId);
     await setDoc(asanaRef, {
       asanaId,
@@ -24,7 +22,7 @@ export const markAsanaAsCompleted = async (userId, asanaId, courseId, executionT
       completedAt: Timestamp.now(),
     });
 
-    // Check if course should be marked as completed
+    
     await checkAndMarkCourseCompleted(userId, courseId);
 
     return { error: null };
@@ -34,20 +32,18 @@ export const markAsanaAsCompleted = async (userId, asanaId, courseId, executionT
   }
 };
 
-/**
- * Unmark asana as completed
- */
+
 export const unmarkAsanaAsCompleted = async (userId, asanaId) => {
   try {
     const asanaRef = doc(db, 'users', userId, 'completedAsanas', asanaId);
     
-    // Get the courseId before deleting
+   
     const asanaSnap = await getDoc(asanaRef);
     const courseId = asanaSnap.exists() ? asanaSnap.data().courseId : null;
 
     await deleteDoc(asanaRef);
 
-    // If course was completed, unmark it too
+    
     if (courseId) {
       const courseRef = doc(db, 'users', userId, 'completedCourses', courseId);
       await deleteDoc(courseRef);
@@ -60,9 +56,7 @@ export const unmarkAsanaAsCompleted = async (userId, asanaId) => {
   }
 };
 
-/**
- * Check if asana is completed
- */
+
 export const isAsanaCompleted = async (userId, asanaId) => {
   try {
     const asanaRef = doc(db, 'users', userId, 'completedAsanas', asanaId);
@@ -74,9 +68,7 @@ export const isAsanaCompleted = async (userId, asanaId) => {
   }
 };
 
-/**
- * Get all completed asanas (optionally filtered by course)
- */
+
 export const getCompletedAsanas = async (userId, courseId = null) => {
   try {
     const completedAsanasRef = collection(db, 'users', userId, 'completedAsanas');
@@ -98,9 +90,7 @@ export const getCompletedAsanas = async (userId, courseId = null) => {
   }
 };
 
-/**
- * Get all completed courses
- */
+
 export const getCompletedCourses = async (userId) => {
   try {
     const completedCoursesRef = collection(db, 'users', userId, 'completedCourses');
@@ -118,27 +108,25 @@ export const getCompletedCourses = async (userId) => {
   }
 };
 
-/**
- * Check if all asanas in a course are completed and mark course as completed
- */
+
 export const checkAndMarkCourseCompleted = async (userId, courseId) => {
   try {
-    // Get all asanas in the course
+   
     const allAsanas = await getAsanasByCourseId(courseId);
     
     if (allAsanas.length === 0) {
       return { error: null, completed: false };
     }
 
-    // Get completed asanas for this course
+    
     const completedAsanas = await getCompletedAsanas(userId, courseId);
     const completedAsanaIds = completedAsanas.map(asana => asana.asanaId);
 
-    // Check if all asanas are completed
+    
     const allCompleted = allAsanas.every(asana => completedAsanaIds.includes(asana.id));
 
     if (allCompleted) {
-      // Mark course as completed
+      
       const courseRef = doc(db, 'users', userId, 'completedCourses', courseId);
       await setDoc(courseRef, {
         courseId,

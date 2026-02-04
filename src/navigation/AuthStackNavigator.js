@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/auth';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import ProfileStackNavigator from './ProfileStackNavigator';
 
 const AuthStack = createNativeStackNavigator();
 
@@ -14,7 +14,7 @@ export default function AuthStackNavigator() {
 
   if (isAuthenticated) {
     return (
-      <ProfileScreen />
+      <ProfileStackNavigator />
     );
   }
 

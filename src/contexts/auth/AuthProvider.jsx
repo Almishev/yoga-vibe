@@ -24,6 +24,7 @@ export default function AuthProvider({ children }) {
         uid: firebaseUser.uid,
         email: firebaseUser.email,
         name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Потребител',
+        photoURL: firebaseUser.photoURL || null,
       };
 
       if (userDataFromFirestore) {
@@ -31,11 +32,14 @@ export default function AuthProvider({ children }) {
           ...userData,
           ...userDataFromFirestore,
           name: userDataFromFirestore.name || userData.name,
+          // Използвай photoURL от Firestore, ако има, иначе от Firebase Auth
+          photoURL: userDataFromFirestore.photoURL || userData.photoURL,
         };
       } else {
         await createUserData(firebaseUser.uid, {
           name: userData.name,
           email: userData.email,
+          photoURL: userData.photoURL,
         });
       }
 

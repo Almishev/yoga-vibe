@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/auth';
 import { updateProfile, reload } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import { updateUserData } from '../services/userService';
+import { uploadProfileImage, deleteProfileImage } from '../services/storageService';
 import EditProfile from '../componenets/EditProfile';
 
 export default function EditProfileScreen() {
@@ -23,26 +24,60 @@ export default function EditProfileScreen() {
     if (loading || !user) return;
 
     setLoading(true);
-    const { name } = values;
+    const { name, photoURI, removePhoto } = values;
+    let photoURL = user.photoURL || null;
 
     try {
-      // Обнови Firebase Auth displayName
+      
+      if (removePhoto) {
+        const deleteResult = await deleteProfileImage(user.uid);
+        if (deleteResult.error) {
+          Alert.alert('Грешка', deleteResult.error);
+          setLoading(false);
+          return;
+        }
+        photoURL = null;
+      } else if (photoURI) {
+        
+        if (user.photoURL) {
+          const deleteResult = await deleteProfileImage(user.uid);
+          if (deleteResult.error) {
+            console.warn('Failed to delete old image, continuing with upload:', deleteResult.error);
+          }
+        }
+        
+        const uploadResult = await uploadProfileImage(user.uid, photoURI);
+        if (uploadResult.error) {
+          Alert.alert('Грешка', uploadResult.error);
+          setLoading(false);
+          return;
+        }
+        photoURL = uploadResult.url;
+      }
+
+      
       if (auth.currentUser) {
         await updateProfile(auth.currentUser, {
           displayName: name,
+          photoURL: photoURL,
         });
-        // Reload current user за да се обновят данните
+        
         await reload(auth.currentUser);
       }
 
-      // Обнови Firestore name
-      const result = await updateUserData(user.uid, { name });
+      
+      const updateData = { name };
+      if (photoURL !== null || removePhoto) {
+        updateData.photoURL = photoURL;
+      }
+
+      const result = await updateUserData(user.uid, updateData);
 
       if (result.error) {
         Alert.alert('Грешка', result.error);
         setLoading(false);
       } else {
-        // Обнови данните в контекста веднага
+        
         await refreshUser();
         setLoading(false);
         Alert.alert('Успех', 'Профилът е обновен успешно!', [
@@ -73,6 +108,7 @@ export default function EditProfileScreen() {
         onCancel={handleCancel}
         loading={loading}
         initialName={user.name || ''}
+        initialPhotoURL={user.photoURL || null}
       />
     </SafeAreaView>
   );

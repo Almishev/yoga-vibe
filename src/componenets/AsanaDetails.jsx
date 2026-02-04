@@ -26,7 +26,7 @@ export default function AsanaDetails({ asana }) {
   }, [user, asana?.id]);
 
   const handleAutoComplete = async () => {
-    // Автоматично маркиране на асаната като завършена, когато таймерът свърши
+    
     if (!user || !asana?.id || !asana?.courseId || isCompleted) return;
 
     try {
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    aspectRatio: 3 / 4, // Вертикални снимки (3:4 съотношение)
+    aspectRatio: 3 / 4, 
     backgroundColor: '#f0f0f0',
   },
   content: {

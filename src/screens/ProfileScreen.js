@@ -26,11 +26,10 @@ export default function ProfileScreen() {
       }
 
       try {
-        // Зареди завършените курсове
+        
         const completed = await getCompletedCourses(user.uid);
         setCompletedCourses(completed);
 
-        // Зареди пълните данни за завършените курсове
         const coursesData = await Promise.all(
           completed.map(async (completedCourse) => {
             const courseData = await getCourseById(completedCourse.courseId);
@@ -38,15 +37,11 @@ export default function ProfileScreen() {
           })
         );
 
-        // Филтрирай null стойностите (ако курсът е изтрит)
         setCompletedCoursesData(coursesData.filter(course => course !== null));
 
-        // Зареди завършените асани (за започнати курсове)
         const completedAsanas = await getCompletedAsanas(user.uid);
         const completedCourseIds = new Set(completed.map(c => c.courseId));
 
-        // Уникални courseId, за които има поне една завършена асана,
-        // но курсът все още не е в списъка със завършени
         const courseIdsWithCompletedAsanas = Array.from(
           new Set(completedAsanas.map(a => a.courseId).filter(Boolean))
         ).filter(courseId => !completedCourseIds.has(courseId));
@@ -63,7 +58,7 @@ export default function ProfileScreen() {
 
           const completedForCourse = completedAsanas.filter(a => a.courseId === courseId);
 
-          // Ако има поне една, но не всички асани са завършени -> започнат курс
+          
           if (completedForCourse.length > 0 && completedForCourse.length < allAsanas.length) {
             started.push({
               id: courseId,
@@ -134,21 +129,21 @@ export default function ProfileScreen() {
             if (!user) return;
 
             try {
-              // Изтрий данните от Firestore
+              
               const deleteDataResult = await deleteUserData(user.uid);
               if (deleteDataResult.error) {
                 Alert.alert('Грешка', `Грешка при изтриване на данни: ${deleteDataResult.error}`);
                 return;
               }
 
-              // Изтрий акаунта от Firebase Auth
+             
               const deleteAccountResult = await deleteUserAccount();
               if (deleteAccountResult.error) {
                 Alert.alert('Грешка', deleteAccountResult.error);
                 return;
               }
 
-              // Успешно изтриване
+              
               Alert.alert(
                 'Профилът е изтрит',
                 'Вашият профил е изтрит успешно.',

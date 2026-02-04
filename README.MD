@@ -2,6 +2,7 @@
 
 Yoga Vibe is a mobile application built with React Native and Expo, designed to help users practice yoga at home in a simple and structured way.
 
+```text
 App
 |
 \-- NavigationContainer
@@ -52,6 +53,7 @@ App
                         |
                         \-- Register (RegisterScreen)
                             (title: "Регистрация")
+```
 
 The app provides access to yoga categories, courses, and individual poses, including detailed descriptions, benefits, and visual guidance. The application is fully usable without user registration, allowing guest users to explore all available content.
 

@@ -8,15 +8,13 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 
-/**
- * Get all asanas
- */
+
 export const getAllAsanas = async () => {
   try {
     const asanasRef = collection(db, 'asanas');
     const snapshot = await getDocs(asanasRef);
     
-    // Ако няма документи, върни празен масив веднага
+
     if (snapshot.empty) {
       return [];
     }
@@ -26,22 +24,20 @@ export const getAllAsanas = async () => {
       ...doc.data()
     }));
     
-    // Сортирай локално по createdAt, ако съществува
+  
     return asanas.sort((a, b) => {
       const aTime = a.createdAt?.toMillis?.() || a.createdAt || 0;
       const bTime = b.createdAt?.toMillis?.() || b.createdAt || 0;
-      return bTime - aTime; // desc
+      return bTime - aTime; 
     });
   } catch (error) {
     console.error('Error fetching asanas:', error);
-    // Ако има грешка, върни празен масив вместо да хвърляш грешка
+   
     return [];
   }
 };
 
-/**
- * Get asanas by course ID
- */
+
 export const getAsanasByCourseId = async (courseId) => {
   try {
     const asanasRef = collection(db, 'asanas');
@@ -53,22 +49,20 @@ export const getAsanasByCourseId = async (courseId) => {
       ...doc.data()
     }));
     
-    // Сортирай локално по createdAt, ако съществува
+   
     return asanas.sort((a, b) => {
       const aTime = a.createdAt?.toMillis?.() || a.createdAt || 0;
       const bTime = b.createdAt?.toMillis?.() || b.createdAt || 0;
-      return aTime - bTime; // asc
+      return aTime - bTime; 
     });
   } catch (error) {
     console.error('Error fetching asanas by course:', error);
-    // Ако има грешка, върни празен масив вместо да хвърляш грешка
+    
     return [];
   }
 };
 
-/**
- * Get asana by ID
- */
+
 export const getAsanaById = async (asanaId) => {
   try {
     const asanaRef = doc(db, 'asanas', asanaId);
