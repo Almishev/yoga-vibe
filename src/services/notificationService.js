@@ -62,37 +62,3 @@ export const registerPushToken = async () => {
   }
 };
 
-export const showNotification = async (title, body, data = {}) => {
-  try {
-    const hasPermission = await getNotificationPermissions();
-    if (!hasPermission) {
-      console.warn('Notification permissions not granted, skipping notification');
-      return;
-    }
-
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title,
-        body,
-        data,
-        sound: true,
-      },
-      trigger: null,
-    });
-    console.log('Notification shown:', title);
-  } catch (error) {
-    console.error('Error showing notification:', error);
-    console.warn('This might be due to Expo Go limitations. Consider using a development build for full notification support.');
-  }
-};
-
-export const getNotificationPermissions = async () => {
-  try {
-    const { status } = await Notifications.getPermissionsAsync();
-    return status === 'granted';
-  } catch (error) {
-    console.error('Error getting notification permissions:', error);
-    return false;
-  }
-};
-

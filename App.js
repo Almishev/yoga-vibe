@@ -5,14 +5,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider } from './src/contexts/auth';
 import RootNavigator from './src/navigation/RootNavigator';
 import { initializeNotifications } from './src/services/notificationService';
-import { useCourseNotifications } from './src/hooks/useCourseNotifications';
 
 function AppContent() {
   useEffect(() => {
     initializeNotifications();
   }, []);
-
-  useCourseNotifications();
 
   return (
     <NavigationContainer>
