@@ -1,4 +1,6 @@
 import * as Notifications from 'expo-notifications';
+import { doc, setDoc } from 'firebase/firestore';
+import { db, auth } from './firebase';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -22,11 +24,41 @@ export const initializeNotifications = async () => {
       console.warn('Notification permissions not granted');
       return false;
     }
+
+    await registerPushToken();
     
     return true;
   } catch (error) {
     console.error('Error initializing notifications:', error);
     return false;
+  }
+};
+
+export const registerPushToken = async () => {
+  try {
+    if (!auth.currentUser) {
+      console.log('No user logged in, skipping push token registration');
+      return;
+    }
+
+    const token = await Notifications.getExpoPushTokenAsync({
+      projectId: 'yoga-vibe-4bdc3',
+    });
+
+    if (token?.data) {
+      const userId = auth.currentUser.uid;
+      const tokenRef = doc(db, 'pushTokens', userId);
+      
+      await setDoc(tokenRef, {
+        expoPushToken: token.data,
+        userId: userId,
+        updatedAt: new Date().toISOString(),
+      }, { merge: true });
+
+      console.log('Push token registered:', token.data);
+    }
+  } catch (error) {
+    console.error('Error registering push token:', error);
   }
 };
 
