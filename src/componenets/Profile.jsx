@@ -89,7 +89,7 @@ export default function Profile({ user, onEdit, onLogout, onDelete, completedCou
                 <View style={styles.startedCourseInfo}>
                   <Text style={styles.startedCourseTitle}>{course.title}</Text>
                   <Text style={styles.startedCourseProgress}>
-                    {course.completedCount} от {course.totalCount} асани завършени
+                    {course.completedCount} от {course.totalCount} {course.category === 'cosmoenergetics' ? 'сеанса' : 'асани'} завършени
                   </Text>
                 </View>
               </View>
@@ -103,7 +103,7 @@ export default function Profile({ user, onEdit, onLogout, onDelete, completedCou
             <View style={styles.emptyState}>
               <Ionicons name="trophy-outline" size={48} color="#ccc" />
               <Text style={styles.emptyStateText}>Все още няма завършени курсове</Text>
-              <Text style={styles.emptyStateSubtext}>Започнете да практикувате асани, за да завършите курсове</Text>
+              <Text style={styles.emptyStateSubtext}>Започнете да практикувате, за да завършите курсове</Text>
             </View>
           </View>
         )}

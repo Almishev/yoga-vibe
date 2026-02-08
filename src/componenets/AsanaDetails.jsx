@@ -4,11 +4,38 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/auth';
 import { isAsanaCompleted, markAsanaAsCompleted } from '../services/progressService';
+import { getCourseById } from '../services/courseService';
 import AsanaTimer from './AsanaTimer';
 
-export default function AsanaDetails({ asana }) {
+export default function AsanaDetails({ asana, course: courseProp }) {
   const { user } = useAuth();
   const [isCompleted, setIsCompleted] = useState(false);
+  const [course, setCourse] = useState(courseProp);
+
+  useEffect(() => {
+    const loadCourse = async () => {
+      if (courseProp) {
+        setCourse(courseProp);
+        return;
+      }
+      if (asana?.courseId) {
+        try {
+          const courseData = await getCourseById(asana.courseId);
+          setCourse(courseData);
+        } catch (error) {
+          console.error('Error loading course:', error);
+        }
+      }
+    };
+    loadCourse();
+  }, [asana?.courseId, courseProp]);
+
+  const courseCategory = course?.category || 'yoga';
+  const isCosmoenergetics = courseCategory === 'cosmoenergetics';
+  const timeLabel = isCosmoenergetics ? 'минути' : 'секунди';
+  const displayTime = isCosmoenergetics 
+    ? Math.round((asana.executionTime || 0) / 60) 
+    : (asana.executionTime || 0);
 
   useEffect(() => {
     const checkCompletion = async () => {
@@ -73,10 +100,16 @@ export default function AsanaDetails({ asana }) {
           <View style={styles.divider} />
 
           <View style={styles.timerSection}>
-            <Text style={styles.sectionLabel}>Време за практика</Text>
+            <Text style={styles.sectionLabel}>
+              {isCosmoenergetics ? 'Време за сеанс' : 'Време за практика'}
+            </Text>
+            <Text style={styles.timeInfo}>
+              {displayTime} {timeLabel}
+            </Text>
             <AsanaTimer 
               initialSeconds={asana.executionTime} 
               onComplete={handleAutoComplete}
+              isCosmoenergetics={isCosmoenergetics}
             />
           </View>
 
@@ -174,5 +207,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#4CAF50',
     marginLeft: 6,
+  },
+  timeInfo: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 8,
   },
 });

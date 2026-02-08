@@ -46,7 +46,7 @@ export default function HomeStackNavigator() {
         name="AsanaDetails" 
         component={AsanaDetailsScreen}
         options={({ route }) => ({ 
-          title: route.params?.asana?.name || 'Асана',
+          title: route.params?.asana?.name || 'Практика',
         })}
       />
     </HomeStack.Navigator>

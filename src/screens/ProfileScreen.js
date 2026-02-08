@@ -65,6 +65,7 @@ export default function ProfileScreen() {
               title: courseData.title,
               completedCount: completedForCourse.length,
               totalCount: allAsanas.length,
+              category: courseData.category || 'yoga',
             });
           }
         }

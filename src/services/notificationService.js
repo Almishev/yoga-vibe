@@ -36,26 +36,30 @@ export const initializeNotifications = async () => {
 
 export const registerPushToken = async () => {
   try {
-    if (!auth.currentUser) {
-      console.log('No user logged in, skipping push token registration');
-      return;
-    }
-
     const token = await Notifications.getExpoPushTokenAsync({
       projectId: 'yoga-vibe-4bdc3',
     });
 
     if (token?.data) {
-      const userId = auth.currentUser.uid;
-      const tokenRef = doc(db, 'pushTokens', userId);
+      const tokenId = token.data.replace(/[^a-zA-Z0-9]/g, '_');
+      const tokenRef = doc(db, 'pushTokens', tokenId);
       
-      await setDoc(tokenRef, {
+      const tokenData = {
         expoPushToken: token.data,
-        userId: userId,
         updatedAt: new Date().toISOString(),
-      }, { merge: true });
+      };
 
-      console.log('Push token registered:', token.data);
+      if (auth.currentUser) {
+        tokenData.userId = auth.currentUser.uid;
+        tokenData.userEmail = auth.currentUser.email;
+      } else {
+        tokenData.userId = null;
+        tokenData.isGuest = true;
+      }
+      
+      await setDoc(tokenRef, tokenData, { merge: true });
+
+      console.log('Push token registered:', token.data, auth.currentUser ? `(User: ${auth.currentUser.uid})` : '(Guest)');
     }
   } catch (error) {
     console.error('Error registering push token:', error);

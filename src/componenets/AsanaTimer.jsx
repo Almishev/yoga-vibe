@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function AsanaTimer({ initialSeconds, onComplete }) {
+export default function AsanaTimer({ initialSeconds, onComplete, isCosmoenergetics = false }) {
   const [seconds, setSeconds] = useState(initialSeconds);
   const [isRunning, setIsRunning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -52,24 +52,38 @@ export default function AsanaTimer({ initialSeconds, onComplete }) {
   };
 
   const formatTime = (totalSeconds) => {
-    const mins = Math.floor(totalSeconds / 60);
-    const secs = totalSeconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    if (isCosmoenergetics) {
+      // За космоенергетика показваме времето като минути:секунди (напр. 45:00)
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    } else {
+      // За йога показваме времето като минути:секунди (напр. 01:30)
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={[
         styles.timerCircle,
+        isCosmoenergetics && styles.timerCircleCosmoenergetics,
         isCompleted && styles.timerCircleCompleted
       ]}>
-        <Text style={styles.timerText}>{formatTime(seconds)}</Text>
+        <Text style={[
+          styles.timerText,
+          isCosmoenergetics && styles.timerTextCosmoenergetics
+        ]}>{formatTime(seconds)}</Text>
       </View>
 
       {isCompleted && (
         <View style={styles.completedBadge}>
           <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
-          <Text style={styles.completedText}>Практиката е завършена</Text>
+          <Text style={styles.completedText}>
+            {isCosmoenergetics ? 'Сеансът е завършен' : 'Практиката е завършена'}
+          </Text>
         </View>
       )}
 
@@ -118,6 +132,11 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
   },
+  timerCircleCosmoenergetics: {
+    width: 220,
+    height: 75,
+    borderRadius: 110,
+  },
   timerCircleCompleted: {
     backgroundColor: '#4CAF50',
   },
@@ -125,6 +144,9 @@ const styles = StyleSheet.create({
     fontSize: 42,
     fontWeight: 'bold',
     color: '#fff',
+  },
+  timerTextCosmoenergetics: {
+    fontSize: 48,
   },
   completedBadge: {
     flexDirection: 'row',

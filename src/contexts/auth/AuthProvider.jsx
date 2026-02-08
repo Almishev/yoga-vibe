@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { onAuthStateChange } from '../../services/authService';
 import { getUserData, createUserData } from '../../services/userService';
+import { registerPushToken } from '../../services/notificationService';
 import { auth } from '../../services/firebase';
 import AuthContext from './AuthContext';
 
@@ -44,6 +45,14 @@ export default function AuthProvider({ children }) {
       }
 
       setUser(userData);
+      
+      if (firebaseUser) {
+        setTimeout(() => {
+          registerPushToken().catch(error => {
+            console.error('Error updating push token after login:', error);
+          });
+        }, 1000);
+      }
     } else {
       setUser(null);
     }

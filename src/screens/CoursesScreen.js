@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, RefreshControl, ActivityIndicator, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
@@ -14,6 +14,7 @@ export default function CoursesScreen() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('yoga');
 
   const loadCourses = async () => {
     try {
@@ -45,6 +46,11 @@ export default function CoursesScreen() {
     loadCourses();
   }, []);
 
+  const filteredCourses = courses.filter(course => {
+    const courseCategory = course.category || 'yoga';
+    return courseCategory === selectedCategory;
+  });
+
   const handleCoursePress = (course) => {
     navigation.navigate('CourseDetails', { course });
   };
@@ -65,8 +71,27 @@ export default function CoursesScreen() {
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Yoga Vibe</Text>
           <Text style={styles.headerSubtitle}>
-            {courses.length} курса с Веселина Маркова
+            {filteredCourses.length} {selectedCategory === 'yoga' ? 'йога' : 'космоенергетика'} курса
           </Text>
+        </View>
+
+        <View style={styles.tabsContainer}>
+          <Pressable
+            style={[styles.tab, selectedCategory === 'yoga' && styles.tabActive]}
+            onPress={() => setSelectedCategory('yoga')}
+          >
+            <Text style={[styles.tabText, selectedCategory === 'yoga' && styles.tabTextActive]}>
+              🧘‍♀️ Йога
+            </Text>
+          </Pressable>
+          <Pressable
+            style={[styles.tab, selectedCategory === 'cosmoenergetics' && styles.tabActive]}
+            onPress={() => setSelectedCategory('cosmoenergetics')}
+          >
+            <Text style={[styles.tabText, selectedCategory === 'cosmoenergetics' && styles.tabTextActive]}>
+              🌌 Космоенергетика
+            </Text>
+          </Pressable>
         </View>
 
         <View style={styles.section}>
@@ -81,8 +106,8 @@ export default function CoursesScreen() {
               title="Грешка"
               subtitle={error}
             />
-          ) : courses.length > 0 ? (
-            courses.map((course) => (
+          ) : filteredCourses.length > 0 ? (
+            filteredCourses.map((course) => (
               <CourseListItem
                 key={course.id}
                 course={course}
@@ -145,5 +170,34 @@ const styles = StyleSheet.create({
     marginTop: 12,
     fontSize: 14,
     color: '#666',
+  },
+  tabsContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 8,
+    gap: 12,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#e0e0e0',
+  },
+  tabActive: {
+    backgroundColor: '#9B59B6',
+    borderColor: '#9B59B6',
+  },
+  tabText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
+  },
+  tabTextActive: {
+    color: '#fff',
   },
 });

@@ -10,6 +10,15 @@ export default function CourseDetails({ course }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const courseCategory = course?.category || 'yoga';
+  const itemLabel = courseCategory === 'cosmoenergetics' ? 'сеанса' : 'асани';
+  const sectionTitle = courseCategory === 'cosmoenergetics' ? 'Сеанси в курса' : 'Асани в курса';
+  const loadingText = courseCategory === 'cosmoenergetics' ? 'Зареждане на сеанси...' : 'Зареждане на асани...';
+  const emptyTitle = courseCategory === 'cosmoenergetics' ? 'Няма сеанси' : 'Няма асани';
+  const emptySubtitle = courseCategory === 'cosmoenergetics' 
+    ? 'В този курс все още няма добавени сеанси' 
+    : 'В този курс все още няма добавени асани';
+
   useEffect(() => {
     const loadAsanas = async () => {
       if (!course?.id) {
@@ -23,7 +32,10 @@ export default function CourseDetails({ course }) {
         setAsanas(asanasData);
       } catch (err) {
         console.error('Error loading asanas:', err);
-        setError('Грешка при зареждане на асаните');
+        const errorMessage = courseCategory === 'cosmoenergetics' 
+          ? 'Грешка при зареждане на сеансите' 
+          : 'Грешка при зареждане на асаните';
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }
@@ -39,23 +51,48 @@ export default function CourseDetails({ course }) {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.courseHeader}>
+          <Text style={styles.courseTitle}>{course.title}</Text>
           <View style={styles.metaRow}>
             <Text style={styles.metaText}>
-              {course.style} • {course.focus} • {course.duration} мин
+              {(() => {
+                // Парсваме duration - може да е число или текст
+                const getDuration = () => {
+                  if (typeof course.duration === 'number') {
+                    return course.duration;
+                  }
+                  if (typeof course.duration === 'string') {
+                    // Опитваме се да извлечем число от текста (напр. "30 минути" -> 30)
+                    const match = course.duration.match(/\d+/);
+                    return match ? parseInt(match[0]) : 0;
+                  }
+                  return 0;
+                };
+                const duration = getDuration();
+                
+                // За космоенергетика показваме само продължителността
+                if (courseCategory === 'cosmoenergetics') {
+                  return `${duration} минути`;
+                }
+                
+                // За йога показваме стил, фокус и продължителност
+                const style = course.style || 'Йога';
+                const focus = course.focus || 'Практика';
+                return `${style} • ${focus} • ${duration} мин`;
+              })()}
             </Text>
           </View>
           {course.description && (
             <Text style={styles.description}>{course.description}</Text>
           )}
-          <Text style={styles.asanaCount}>{asanas.length} асани</Text>
+          <Text style={styles.asanaCount}>{asanas.length} {itemLabel}</Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Асани в курса</Text>
+          <Text style={styles.sectionTitle}>{sectionTitle}</Text>
           {loading ? (
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color="#9B59B6" />
-              <Text style={styles.loadingText}>Зареждане на асани...</Text>
+              <Text style={styles.loadingText}>{loadingText}</Text>
             </View>
           ) : error ? (
             <EmptyState
@@ -65,13 +102,13 @@ export default function CourseDetails({ course }) {
             />
           ) : asanas.length > 0 ? (
             asanas.map((asana) => (
-              <AsanaListItem key={asana.id} asana={asana} />
+              <AsanaListItem key={asana.id} asana={asana} course={course} />
             ))
           ) : (
             <EmptyState
-              icon="🧘‍♀️"
-              title="Няма асани"
-              subtitle="В този курс все още няма добавени асани"
+              icon={courseCategory === 'cosmoenergetics' ? '🌌' : '🧘‍♀️'}
+              title={emptyTitle}
+              subtitle={emptySubtitle}
             />
           )}
         </View>
@@ -97,6 +134,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  courseTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 12,
   },
   metaRow: {
     marginBottom: 12,

@@ -1,6 +1,26 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 export default function CourseListItem({ course, asanaCount, onPress, featured = false }) {
+  const courseCategory = course?.category || 'yoga';
+  const itemLabel = courseCategory === 'cosmoenergetics' ? 'сеанса' : 'асани';
+
+  // Парсваме duration - може да е число или текст
+  const getDuration = () => {
+    if (typeof course.duration === 'number') {
+      return course.duration;
+    }
+    if (typeof course.duration === 'string') {
+      // Опитваме се да извлечем число от текста (напр. "30 минути" -> 30)
+      const match = course.duration.match(/\d+/);
+      return match ? parseInt(match[0]) : 0;
+    }
+    return 0;
+  };
+
+  const duration = getDuration();
+  const style = course.style || 'Йога';
+  const focus = course.focus || 'Практика';
+
   return (
     <TouchableOpacity 
       style={[styles.container, featured && styles.featuredContainer]}
@@ -11,7 +31,7 @@ export default function CourseListItem({ course, asanaCount, onPress, featured =
         <Text style={styles.title}>{course.title}</Text>
         <View style={styles.metaRow}>
           <Text style={styles.metaText}>
-            {course.style} • {course.focus} • {course.duration} мин
+            {style} • {focus} • {duration} мин
           </Text>
         </View>
         {course.description && (
@@ -19,7 +39,7 @@ export default function CourseListItem({ course, asanaCount, onPress, featured =
             {course.description}
           </Text>
         )}
-        <Text style={styles.asanaCount}>{asanaCount} асани</Text>
+        <Text style={styles.asanaCount}>{asanaCount} {itemLabel}</Text>
       </View>
       {!featured && <Text style={styles.arrow}>›</Text>}
     </TouchableOpacity>
