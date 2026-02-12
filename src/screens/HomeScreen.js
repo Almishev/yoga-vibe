@@ -26,7 +26,7 @@ export default function HomeScreen() {
       >
         <View style={styles.heroSection}>
           <Image
-            source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/yoga-vibe-4bdc3.firebasestorage.app/o/asanas%2FIMG-20260129-WA0001%20(1).jpg?alt=media&token=e2539c16-1912-4274-b486-f333becd0cca' }}
+            source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/yoga-vibe-4bdc3.firebasestorage.app/o/profile-images%2FgXAC050ARMZ2sXPcz79gghoepM22%2Fnewbanner%20(1).jpg?alt=media&token=99618308-e9f5-40e3-b5f4-c906892a8e15' }}
             style={styles.heroImage}
             resizeMode="cover"
           />

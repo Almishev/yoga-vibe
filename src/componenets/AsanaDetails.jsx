@@ -97,21 +97,22 @@ export default function AsanaDetails({ asana, course: courseProp }) {
             <Text style={styles.description}>{asana.description}</Text>
           )}
           
-          <View style={styles.divider} />
-
-          <View style={styles.timerSection}>
-            <Text style={styles.sectionLabel}>
-              {isCosmoenergetics ? 'Време за сеанс' : 'Време за практика'}
-            </Text>
-            <Text style={styles.timeInfo}>
-              {displayTime} {timeLabel}
-            </Text>
-            <AsanaTimer 
-              initialSeconds={asana.executionTime} 
-              onComplete={handleAutoComplete}
-              isCosmoenergetics={isCosmoenergetics}
-            />
-          </View>
+          {!isCosmoenergetics && (
+            <>
+              <View style={styles.divider} />
+              <View style={styles.timerSection}>
+                <Text style={styles.sectionLabel}>Време за практика</Text>
+                <Text style={styles.timeInfo}>
+                  {displayTime} {timeLabel}
+                </Text>
+                <AsanaTimer 
+                  initialSeconds={asana.executionTime} 
+                  onComplete={handleAutoComplete}
+                  isCosmoenergetics={false}
+                />
+              </View>
+            </>
+          )}
 
           <View style={styles.divider} />
 

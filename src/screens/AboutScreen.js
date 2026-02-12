@@ -14,7 +14,7 @@ export default function AboutScreen() {
         <View style={styles.header}>
           <View style={styles.profileContainer}>
             <Image
-              source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/yoga-vibe-4bdc3.firebasestorage.app/o/asanas%2F1769984232249_IMG_1608.jpeg?alt=media&token=630cba57-cb9d-4e51-a26c-c63ba92e43f5' }}
+              source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/yoga-vibe-4bdc3.firebasestorage.app/o/profile-images%2FgXAC050ARMZ2sXPcz79gghoepM22%2Fnewbanner%20(1).jpg?alt=media&token=99618308-e9f5-40e3-b5f4-c906892a8e15' }}
               style={styles.profileImage}
               resizeMode="cover"
             />
