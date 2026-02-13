@@ -3,6 +3,7 @@ import { CommonActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/auth';
+import { useTheme } from '../contexts/theme';
 import HomeStackNavigator from './HomeStackNavigator';
 import AuthStackNavigator from './AuthStackNavigator';
 import ProfileStackNavigator from './ProfileStackNavigator';
@@ -12,17 +13,18 @@ const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
   const { isAuthenticated } = useAuth();
+  const { theme } = useTheme();
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#fff',
-          borderTopColor: '#e0e0e0',
+          backgroundColor: theme.colors.surface,
+          borderTopColor: theme.colors.border,
         },
-        tabBarActiveTintColor: '#9B59B6',
-        tabBarInactiveTintColor: '#999',
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textSecondary,
         tabBarIcon: ({ color, size }) => {
           let iconName;
 

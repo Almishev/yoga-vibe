@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../contexts/auth';
+import { useTheme } from '../contexts/theme';
 import { updateProfile, reload } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import { updateUserData } from '../services/userService';
@@ -12,6 +13,7 @@ import EditProfile from '../componenets/EditProfile';
 export default function EditProfileScreen() {
   const navigation = useNavigation();
   const { user, refreshUser } = useAuth();
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -102,7 +104,7 @@ export default function EditProfileScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#f5f5f5' }} edges={['bottom']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }} edges={['bottom']}>
       <EditProfile
         onSubmit={handleSubmit}
         onCancel={handleCancel}

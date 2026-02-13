@@ -1,72 +1,52 @@
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { useTheme } from '../contexts/theme';
 
 export default function Button({
-    title,
-    onPress,
-    variant = 'primary',
-    disabled = false,
-    style,
+  title,
+  onPress,
+  variant = 'primary',
+  disabled = false,
+  style,
 }) {
-    return (
-        <TouchableOpacity
-            style={[
-                styles.button,
-                variant === 'secondary' && styles.buttonSecondary,
-                variant === 'outline' && styles.buttonOutline,
-                disabled && styles.buttonDisabled,
-                style,
-            ]}
-            onPress={onPress}
-            disabled={disabled}
-            activeOpacity={0.7}
-        >
-            <Text
-                style={[
-                    styles.text,
-                    variant === 'secondary' && styles.textSecondary,
-                    variant === 'outline' && styles.textOutline,
-                    disabled && styles.textDisabled,
-                ]}
-            >
-                {title}
-            </Text>
-        </TouchableOpacity>
-    );
+  const { theme } = useTheme();
+  const buttonStyle = [
+    styles.button,
+    { backgroundColor: theme.colors.primary },
+    variant === 'secondary' && { backgroundColor: theme.colors.surfaceVariant },
+    variant === 'outline' && { backgroundColor: 'transparent', borderWidth: 1, borderColor: theme.colors.primary },
+    disabled && { backgroundColor: theme.colors.border },
+    style,
+  ];
+  const textStyle = [
+    styles.text,
+    { color: theme.colors.onPrimary },
+    variant === 'secondary' && { color: theme.colors.text },
+    variant === 'outline' && { color: theme.colors.primary },
+    disabled && { color: theme.colors.textSecondary },
+  ];
+  return (
+    <TouchableOpacity
+      style={buttonStyle}
+      onPress={onPress}
+      disabled={disabled}
+      activeOpacity={0.7}
+    >
+      <Text style={textStyle}>{title}</Text>
+    </TouchableOpacity>
+  );
 }
 
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: '#9B59B6',
-        paddingVertical: 14,
-        paddingHorizontal: 24,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonSecondary: {
-        backgroundColor: '#f5f5f5',
-    },
-    buttonOutline: {
-        backgroundColor: 'transparent',
-        borderWidth: 1,
-        borderColor: '#9B59B6',
-    },
-    buttonDisabled: {
-        backgroundColor: '#ccc',
-    },
-    text: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: '600',
-    },
-    textSecondary: {
-        color: '#333',
-    },
-    textOutline: {
-        color: '#9B59B6',
-    },
-    textDisabled: {
-        color: '#999',
-    },
+  button: {
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
 });
 

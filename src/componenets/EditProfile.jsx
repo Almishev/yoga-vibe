@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Image, TouchableOpacity, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../contexts/theme';
 import Button from './Button';
 
 export default function EditProfile({ onSubmit, onCancel, loading = false, initialName = '', initialPhotoURL = null }) {
+  const { theme } = useTheme();
   const [name, setName] = useState(initialName);
   const [selectedImage, setSelectedImage] = useState(initialPhotoURL);
 
@@ -116,32 +118,32 @@ export default function EditProfile({ onSubmit, onCancel, loading = false, initi
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <View style={styles.card}>
-        <Text style={styles.title}>Редактирай профил</Text>
+      <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
+        <Text style={[styles.title, { color: theme.colors.text }]}>Редактирай профил</Text>
 
-        <View style={styles.avatarSection}>
+        <View style={[styles.avatarSection, { backgroundColor: theme.colors.surfaceVariant, borderColor: theme.colors.border }]}>
           <View style={styles.avatarContainer}>
             {selectedImage ? (
-              <Image source={{ uri: selectedImage }} style={styles.avatarImage} />
+              <Image source={{ uri: selectedImage }} style={[styles.avatarImage, { backgroundColor: theme.colors.surfaceVariant, borderColor: theme.colors.surface }]} />
             ) : (
-              <View style={styles.avatarPlaceholder}>
-                <Ionicons name="person" size={40} color="#9B59B6" />
+              <View style={[styles.avatarPlaceholder, { backgroundColor: theme.colors.surfaceVariant, borderColor: theme.colors.surface }]}>
+                <Ionicons name="person" size={40} color={theme.colors.primary} />
               </View>
             )}
             <TouchableOpacity
-              style={styles.changePhotoButton}
+              style={[styles.changePhotoButton, { backgroundColor: theme.colors.primary, borderColor: theme.colors.surface, shadowColor: theme.colors.primary }]}
               onPress={showImagePickerOptions}
               disabled={loading}
             >
-              <Ionicons name="camera" size={20} color="#fff" />
+              <Ionicons name="camera" size={20} color={theme.colors.onPrimary} />
             </TouchableOpacity>
           </View>
           {selectedImage && (
             <TouchableOpacity
-              style={styles.removePhotoButton}
+              style={[styles.removePhotoButton, { backgroundColor: theme.colors.surface, borderColor: '#ff4444' }]}
               onPress={handleRemoveImage}
               disabled={loading}
             >
@@ -151,14 +153,14 @@ export default function EditProfile({ onSubmit, onCancel, loading = false, initi
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Име</Text>
-          <View style={styles.inputWrapper}>
+          <Text style={[styles.label, { color: theme.colors.text }]}>Име</Text>
+          <View style={[styles.inputWrapper, { borderColor: theme.colors.border, backgroundColor: theme.colors.surface }]}>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: theme.colors.text }]}
               value={name}
               onChangeText={setName}
               placeholder="Вашето име"
-              placeholderTextColor="#999"
+              placeholderTextColor={theme.colors.textSecondary}
               autoCapitalize="words"
             />
           </View>
@@ -168,7 +170,7 @@ export default function EditProfile({ onSubmit, onCancel, loading = false, initi
           title={loading ? 'Запазване...' : 'Запази'}
           onPress={handleSubmit}
           disabled={loading || !name.trim()}
-          style={styles.primaryButton}
+          style={[styles.primaryButton, { shadowColor: theme.colors.primary }]}
         />
 
         <Button
@@ -184,144 +186,21 @@ export default function EditProfile({ onSubmit, onCancel, loading = false, initi
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    backgroundColor: '#f5f5f5',
-  },
-  card: {
-    width: '100%',
-    maxWidth: 420,
-    backgroundColor: '#fff',
-    padding: 24,
-    borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  field: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 8,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: '#e0e0e0',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
-  },
-  input: {
-    flex: 1,
-    paddingVertical: 0,
-    color: '#333',
-    fontSize: 16,
-  },
-  primaryButton: {
-    marginTop: 24,
-    shadowColor: '#9B59B6',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 5,
-  },
-  cancelButton: {
-    marginTop: 12,
-  },
-  avatarSection: {
-    alignItems: 'center',
-    marginBottom: 24,
-    backgroundColor: '#f8f8f8',
-    padding: 20,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#e8e0f0',
-  },
-  avatarContainer: {
-    position: 'relative',
-    marginBottom: 12,
-  },
-  avatarImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#f0f0f0',
-    borderWidth: 3,
-    borderColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  avatarPlaceholder: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#f0f0f0',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 3,
-    borderColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  changePhotoButton: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#9B59B6',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 4,
-    borderColor: '#fff',
-    shadowColor: '#9B59B6',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 6,
-    elevation: 8,
-  },
-  removePhotoButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: '#ff4444',
-  },
-  removePhotoText: {
-    color: '#ff4444',
-    fontSize: 14,
-    fontWeight: '600',
-  },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 },
+  card: { width: '100%', maxWidth: 420, padding: 24, borderRadius: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 },
+  title: { fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginBottom: 24 },
+  field: { marginBottom: 16 },
+  label: { fontSize: 15, fontWeight: '600', marginBottom: 8 },
+  inputWrapper: { flexDirection: 'row', alignItems: 'center', borderRadius: 12, borderWidth: 1.5, paddingHorizontal: 16, paddingVertical: 12, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 1 },
+  input: { flex: 1, paddingVertical: 0, fontSize: 16 },
+  primaryButton: { marginTop: 24, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 6, elevation: 5 },
+  cancelButton: { marginTop: 12 },
+  avatarSection: { alignItems: 'center', marginBottom: 24, padding: 20, borderRadius: 16, borderWidth: 1 },
+  avatarContainer: { position: 'relative', marginBottom: 12 },
+  avatarImage: { width: 120, height: 120, borderRadius: 60, borderWidth: 3, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 4 },
+  avatarPlaceholder: { width: 120, height: 120, borderRadius: 60, alignItems: 'center', justifyContent: 'center', borderWidth: 3, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 4 },
+  changePhotoButton: { position: 'absolute', bottom: 0, right: 0, width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', borderWidth: 4, shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.5, shadowRadius: 6, elevation: 8 },
+  removePhotoButton: { paddingVertical: 10, paddingHorizontal: 20, borderRadius: 8, borderWidth: 1.5 },
+  removePhotoText: { color: '#ff4444', fontSize: 14, fontWeight: '600' },
 });
 

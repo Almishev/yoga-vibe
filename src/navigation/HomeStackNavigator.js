@@ -1,6 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTheme } from '../contexts/theme';
 import HomeScreen from '../screens/HomeScreen';
 import CoursesScreen from '../screens/CoursesScreen';
 import CourseDetailsScreen from '../screens/CourseDetailsScreen';
@@ -10,14 +11,21 @@ const HomeStack = createNativeStackNavigator();
 
 export default function HomeStackNavigator() {
   const insets = useSafeAreaInsets();
+  const { theme } = useTheme();
 
   return (
     <HomeStack.Navigator
       screenOptions={{
+        gestureEnabled: true,
+        fullScreenGestureEnabled: true,
         headerShadowVisible: false,
         headerStyle: {
+          backgroundColor: theme.colors.surface,
           height: 44 + insets.top,
         },
+        headerTintColor: theme.colors.text,
+        headerTitleStyle: { color: theme.colors.text },
+        contentStyle: { backgroundColor: theme.colors.background },
         headerStatusBarHeight: insets.top,
       }}
     >

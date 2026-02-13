@@ -1,11 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Pressable, ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
+import { useTheme } from '../contexts/theme';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+  const { theme } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
 
   const handleGetStarted = () => {
@@ -18,7 +19,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView 
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -47,17 +48,15 @@ export default function HomeScreen() {
                 Готови ли сте за практика днес?
               </Text>
               <Pressable 
-                style={styles.getStartedButton}
+                style={[styles.getStartedButton, { backgroundColor: theme.colors.surface, borderColor: theme.colors.primary, shadowColor: theme.colors.primary }]}
                 onPress={handleGetStarted}
               >
-                <Text style={styles.getStartedButtonText}>Започнете сега</Text>
+                <Text style={[styles.getStartedButtonText, { color: theme.colors.primary }]}>Започнете сега</Text>
               </Pressable>
             </View>
           </View>
         </View>
       </ScrollView>
-      
-      <StatusBar style="light" />
     </SafeAreaView>
   );
 }
@@ -116,13 +115,10 @@ const styles = StyleSheet.create({
     textShadowRadius: 3,
   },
   getStartedButton: {
-    backgroundColor: '#fff',
     paddingVertical: 16,
     paddingHorizontal: 40,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: '#9B59B6',
-    shadowColor: '#9B59B6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
@@ -131,7 +127,6 @@ const styles = StyleSheet.create({
   getStartedButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#9B59B6',
   },
   teacherSection: {
     alignItems: 'center',

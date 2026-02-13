@@ -1,16 +1,54 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { StyleSheet, Text, View, ScrollView, Image, Animated } from 'react-native';
+import { PinchGestureHandler, State } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/auth';
+import { useTheme } from '../contexts/theme';
 import { isAsanaCompleted, markAsanaAsCompleted } from '../services/progressService';
 import { getCourseById } from '../services/courseService';
 import AsanaTimer from './AsanaTimer';
 
+const MIN_SCALE = 1;
+const MAX_SCALE = 4;
+
 export default function AsanaDetails({ asana, course: courseProp }) {
   const { user } = useAuth();
+  const { theme } = useTheme();
   const [isCompleted, setIsCompleted] = useState(false);
   const [course, setCourse] = useState(courseProp);
+
+  const baseScaleRef = useRef(1);
+  const baseScale = useRef(new Animated.Value(1)).current;
+  const pinchScale = useRef(new Animated.Value(1)).current;
+
+  const onPinchGestureEvent = Animated.event(
+    [{ nativeEvent: { scale: pinchScale } }],
+    { useNativeDriver: true }
+  );
+
+  const onPinchHandlerStateChange = (e) => {
+    if (e.nativeEvent.oldState === State.ACTIVE) {
+      const newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, baseScaleRef.current * e.nativeEvent.scale));
+      baseScaleRef.current = newScale;
+      baseScale.setValue(newScale);
+      pinchScale.setValue(1);
+    }
+  };
+
+  const stylesThemed = useMemo(() => ({
+    container: { flex: 1, backgroundColor: theme.colors.surface },
+    imageBg: { backgroundColor: theme.colors.surfaceVariant },
+    description: { fontSize: 15, color: theme.colors.textSecondary, lineHeight: 22, marginBottom: 8 },
+    divider: { height: 1, backgroundColor: theme.colors.border, marginVertical: 16 },
+    sectionLabel: { fontSize: 16, fontWeight: '600', color: theme.colors.text, marginBottom: 8 },
+    sectionTitle: { fontSize: 18, fontWeight: '600', color: theme.colors.text, marginBottom: 12 },
+    bullet: { fontSize: 16, color: theme.colors.primary, marginRight: 10, marginTop: 2 },
+    benefitText: { fontSize: 15, color: theme.colors.textSecondary, flex: 1, lineHeight: 22 },
+    completedBadge: { flexDirection: 'row', alignItems: 'center', backgroundColor: theme.colors.surfaceVariant, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, alignSelf: 'flex-start', marginBottom: 12 },
+    completedText: { fontSize: 14, fontWeight: '600', color: '#4CAF50', marginLeft: 6 },
+    timeInfo: { fontSize: 14, color: theme.colors.textSecondary, marginBottom: 8 },
+  }), [theme]);
 
   useEffect(() => {
     const loadCourse = async () => {
@@ -74,35 +112,51 @@ export default function AsanaDetails({ asana, course: courseProp }) {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
+    <SafeAreaView style={stylesThemed.container} edges={['bottom']}>
       <ScrollView 
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
-        <Image 
-          source={{ uri: asana.image }} 
-          style={styles.image}
-          resizeMode="cover"
-        />
+        <PinchGestureHandler
+          onGestureEvent={onPinchGestureEvent}
+          onHandlerStateChange={onPinchHandlerStateChange}
+        >
+          <Animated.View
+            style={[
+              styles.imageWrap,
+              {
+                transform: [
+                  { scale: Animated.multiply(baseScale, pinchScale) },
+                ],
+              },
+            ]}
+          >
+            <Image 
+              source={{ uri: asana.image }} 
+              style={[styles.image, stylesThemed.imageBg]}
+              resizeMode="cover"
+            />
+          </Animated.View>
+        </PinchGestureHandler>
         
         <View style={styles.content}>
           {isCompleted && user && (
-            <View style={styles.completedBadge}>
+            <View style={stylesThemed.completedBadge}>
               <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
-              <Text style={styles.completedText}>Завършена</Text>
+              <Text style={stylesThemed.completedText}>Завършена</Text>
             </View>
           )}
 
           {asana.description && (
-            <Text style={styles.description}>{asana.description}</Text>
+            <Text style={stylesThemed.description}>{asana.description}</Text>
           )}
           
           {!isCosmoenergetics && (
             <>
-              <View style={styles.divider} />
+              <View style={stylesThemed.divider} />
               <View style={styles.timerSection}>
-                <Text style={styles.sectionLabel}>Време за практика</Text>
-                <Text style={styles.timeInfo}>
+                <Text style={stylesThemed.sectionLabel}>Време за практика</Text>
+                <Text style={stylesThemed.timeInfo}>
                   {displayTime} {timeLabel}
                 </Text>
                 <AsanaTimer 
@@ -114,14 +168,14 @@ export default function AsanaDetails({ asana, course: courseProp }) {
             </>
           )}
 
-          <View style={styles.divider} />
+          <View style={stylesThemed.divider} />
 
           <View style={styles.benefitsSection}>
-            <Text style={styles.sectionTitle}>Ползи</Text>
+            <Text style={stylesThemed.sectionTitle}>Ползи</Text>
             {asana.benefits.map((benefit, index) => (
               <View key={index} style={styles.benefitItem}>
-                <Text style={styles.bullet}>•</Text>
-                <Text style={styles.benefitText}>{benefit}</Text>
+                <Text style={stylesThemed.bullet}>•</Text>
+                <Text style={stylesThemed.benefitText}>{benefit}</Text>
               </View>
             ))}
           </View>
@@ -132,86 +186,11 @@ export default function AsanaDetails({ asana, course: courseProp }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  image: {
-    width: '100%',
-    aspectRatio: 3 / 4, 
-    backgroundColor: '#f0f0f0',
-  },
-  content: {
-    padding: 20,
-  },
-  description: {
-    fontSize: 15,
-    color: '#666',
-    lineHeight: 22,
-    marginBottom: 8,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#e0e0e0',
-    marginVertical: 16,
-  },
-  timerSection: {
-    marginBottom: 8,
-  },
-  sectionLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 8,
-  },
-  benefitsSection: {
-    marginBottom: 8,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 12,
-  },
-  benefitItem: {
-    flexDirection: 'row',
-    marginBottom: 8,
-    alignItems: 'flex-start',
-  },
-  bullet: {
-    fontSize: 16,
-    color: '#9B59B6',
-    marginRight: 10,
-    marginTop: 2,
-  },
-  benefitText: {
-    fontSize: 15,
-    color: '#666',
-    flex: 1,
-    lineHeight: 22,
-  },
-  completedBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E8F5E9',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-    alignSelf: 'flex-start',
-    marginBottom: 12,
-  },
-  completedText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#4CAF50',
-    marginLeft: 6,
-  },
-  timeInfo: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
-  },
+  scrollView: { flex: 1 },
+  imageWrap: { width: '100%' },
+  image: { width: '100%', aspectRatio: 3 / 4 },
+  content: { padding: 20 },
+  timerSection: { marginBottom: 8 },
+  benefitsSection: { marginBottom: 8 },
+  benefitItem: { flexDirection: 'row', marginBottom: 8, alignItems: 'flex-start' },
 });

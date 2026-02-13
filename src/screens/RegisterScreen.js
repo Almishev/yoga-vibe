@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '../contexts/theme';
 import { registerUser } from '../services/authService';
 import Register from '../componenets/Register';
 
 export default function RegisterScreen() {
   const navigation = useNavigation();
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (values) => {
@@ -35,7 +37,7 @@ export default function RegisterScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#f5f5f5' }} edges={['bottom']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }} edges={['bottom']}>
       <Register 
         onSubmit={handleSubmit} 
         onGoToLogin={handleGoToLogin}

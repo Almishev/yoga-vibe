@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../contexts/auth';
+import { useTheme } from '../contexts/theme';
 import { logoutUser, deleteUserAccount } from '../services/authService';
 import { deleteUserData } from '../services/userService';
 import { getCompletedCourses, getCompletedAsanas } from '../services/progressService';
@@ -13,6 +14,7 @@ import Profile from '../componenets/Profile';
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuth();
+  const { theme } = useTheme();
   const [completedCourses, setCompletedCourses] = useState([]);
   const [completedCoursesData, setCompletedCoursesData] = useState([]);
   const [startedCourses, setStartedCourses] = useState([]);
@@ -165,7 +167,7 @@ export default function ProfileScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#f5f5f5' }} edges={['top', 'bottom']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }} edges={['top', 'bottom']}>
       <Profile 
         user={user} 
         onEdit={handleEdit} 

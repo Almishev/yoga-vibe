@@ -1,8 +1,10 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../contexts/theme';
 import Button from './Button';
 
 export default function Profile({ user, onEdit, onLogout, onDelete, completedCourses = [], completedCoursesData = [], startedCourses = [] }) {
+  const { theme } = useTheme();
   const displayUser = user || {
     name: 'Гост',
     email: 'guest@yogavibe.app'
@@ -20,54 +22,54 @@ export default function Profile({ user, onEdit, onLogout, onDelete, completedCou
 
   return (
     <ScrollView 
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
       contentContainerStyle={styles.contentContainer}
       showsVerticalScrollIndicator={false}
     >
-      <View style={styles.card}>
+      <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
         <View style={styles.headerRow}>
-          <View style={styles.avatar}>
+          <View style={[styles.avatar, { backgroundColor: theme.colors.primary, shadowColor: theme.colors.primary }]}>
             {displayUser.photoURL ? (
               <Image 
                 source={{ uri: displayUser.photoURL }} 
                 style={styles.avatarImage}
               />
             ) : (
-              <Text style={styles.avatarText}>
+              <Text style={[styles.avatarText, { color: theme.colors.onPrimary }]}>
                 {displayUser.name?.charAt(0)?.toUpperCase() || 'Г'}
               </Text>
             )}
           </View>
           <View style={styles.headerText}>
-            <Text style={styles.name}>{displayUser.name}</Text>
-            <Text style={styles.email}>{displayUser.email}</Text>
+            <Text style={[styles.name, { color: theme.colors.text }]}>{displayUser.name}</Text>
+            <Text style={[styles.email, { color: theme.colors.textSecondary }]}>{displayUser.email}</Text>
           </View>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Моята практика</Text>
+        <View style={[styles.section, { borderTopColor: theme.colors.border }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Моята практика</Text>
           <View style={styles.statsRow}>
-            <View style={styles.stat}>
-              <Text style={styles.statNumber}>{completedCourses.length}</Text>
-              <Text style={styles.statLabel}>Завършени курса</Text>
+            <View style={[styles.stat, { backgroundColor: theme.colors.surfaceVariant, borderColor: theme.colors.border }]}>
+              <Text style={[styles.statNumber, { color: theme.colors.primary }]}>{completedCourses.length}</Text>
+              <Text style={[styles.statLabel, { color: theme.colors.textSecondary }]}>Завършени курса</Text>
             </View>
           </View>
         </View>
 
         {user && completedCourses.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Завършени курсове</Text>
+          <View style={[styles.section, { borderTopColor: theme.colors.border }]}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Завършени курсове</Text>
             {completedCoursesData.map((course) => {
               const completedCourse = completedCourses.find(c => c.courseId === course.id);
               return (
-                <View key={course.id} style={styles.completedCourseItem}>
+                <View key={course.id} style={[styles.completedCourseItem, { backgroundColor: theme.colors.surfaceVariant, borderColor: theme.colors.border }]}>
                   <View style={styles.completedCourseIcon}>
                     <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
                   </View>
                   <View style={styles.completedCourseInfo}>
-                    <Text style={styles.completedCourseTitle}>{course.title}</Text>
+                    <Text style={[styles.completedCourseTitle, { color: theme.colors.text }]}>{course.title}</Text>
                     {completedCourse?.completedAt && (
-                      <Text style={styles.completedCourseDate}>
+                      <Text style={[styles.completedCourseDate, { color: theme.colors.textSecondary }]}>
                         Завършен на {formatDate(completedCourse.completedAt)}
                       </Text>
                     )}
@@ -79,16 +81,16 @@ export default function Profile({ user, onEdit, onLogout, onDelete, completedCou
         )}
 
         {user && startedCourses.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Започнати курсове</Text>
+          <View style={[styles.section, { borderTopColor: theme.colors.border }]}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Започнати курсове</Text>
             {startedCourses.map((course) => (
-              <View key={course.id} style={styles.startedCourseItem}>
+              <View key={course.id} style={[styles.startedCourseItem, { backgroundColor: theme.colors.surfaceVariant, borderColor: theme.colors.border }]}>
                 <View style={styles.startedCourseIcon}>
                   <Ionicons name="play-circle-outline" size={24} color="#FF9800" />
                 </View>
                 <View style={styles.startedCourseInfo}>
-                  <Text style={styles.startedCourseTitle}>{course.title}</Text>
-                  <Text style={styles.startedCourseProgress}>
+                  <Text style={[styles.startedCourseTitle, { color: theme.colors.text }]}>{course.title}</Text>
+                  <Text style={[styles.startedCourseProgress, { color: theme.colors.textSecondary }]}>
                     {course.completedCount} от {course.totalCount} {course.category === 'cosmoenergetics' ? 'сеанса' : 'асани'} завършени
                   </Text>
                 </View>
@@ -98,12 +100,12 @@ export default function Profile({ user, onEdit, onLogout, onDelete, completedCou
         )}
 
         {user && completedCourses.length === 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Завършени курсове</Text>
+          <View style={[styles.section, { borderTopColor: theme.colors.border }]}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Завършени курсове</Text>
             <View style={styles.emptyState}>
-              <Ionicons name="trophy-outline" size={48} color="#ccc" />
-              <Text style={styles.emptyStateText}>Все още няма завършени курсове</Text>
-              <Text style={styles.emptyStateSubtext}>Започнете да практикувате, за да завършите курсове</Text>
+              <Ionicons name="trophy-outline" size={48} color={theme.colors.textSecondary} />
+              <Text style={[styles.emptyStateText, { color: theme.colors.text }]}>Все още няма завършени курсове</Text>
+              <Text style={[styles.emptyStateSubtext, { color: theme.colors.textSecondary }]}>Започнете да практикувате, за да завършите курсове</Text>
             </View>
           </View>
         )}
@@ -113,11 +115,11 @@ export default function Profile({ user, onEdit, onLogout, onDelete, completedCou
             <View style={styles.actionButtonsRow}>
               {onEdit && (
                 <TouchableOpacity
-                  style={styles.iconButton}
+                  style={[styles.iconButton, { borderColor: theme.colors.primary }]}
                   onPress={onEdit}
                   activeOpacity={0.7}
                 >
-                  <Ionicons name="create-outline" size={24} color="#9B59B6" />
+                  <Ionicons name="create-outline" size={24} color={theme.colors.primary} />
                 </TouchableOpacity>
               )}
               {onDelete && (
@@ -134,7 +136,7 @@ export default function Profile({ user, onEdit, onLogout, onDelete, completedCou
               <Button
                 title="Излез"
                 onPress={onLogout}
-                style={styles.logoutButton}
+                style={[styles.logoutButton, { shadowColor: theme.colors.primary }]}
               />
             )}
           </>
@@ -152,14 +154,10 @@ export default function Profile({ user, onEdit, onLogout, onDelete, completedCou
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
+  container: { flex: 1 },
   card: {
     width: '100%',
     maxWidth: 480,
-    backgroundColor: '#fff',
     padding: 24,
     borderRadius: 16,
     shadowColor: '#000',

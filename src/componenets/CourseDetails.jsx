@@ -1,14 +1,27 @@
 import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useTheme } from '../contexts/theme';
 import { getAsanasByCourseId } from '../services/asanaService';
 import AsanaListItem from './AsanaListItem';
 import EmptyState from './EmptyState';
 
 export default function CourseDetails({ course }) {
+  const { theme } = useTheme();
   const [asanas, setAsanas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const stylesThemed = useMemo(() => ({
+    container: { flex: 1, backgroundColor: theme.colors.background },
+    courseHeader: { backgroundColor: theme.colors.surface, padding: 20, marginBottom: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 },
+    courseTitle: { fontSize: 24, fontWeight: '700', color: theme.colors.text, marginBottom: 12 },
+    metaText: { fontSize: 14, color: theme.colors.textSecondary, textTransform: 'capitalize' },
+    description: { fontSize: 15, color: theme.colors.textSecondary, lineHeight: 22, marginBottom: 12 },
+    asanaCount: { fontSize: 14, color: theme.colors.primary, fontWeight: '600' },
+    sectionTitle: { fontSize: 20, fontWeight: '700', color: theme.colors.text, marginBottom: 12 },
+    loadingText: { marginTop: 12, fontSize: 14, color: theme.colors.textSecondary },
+  }), [theme]);
 
   const courseCategory = course?.category || 'yoga';
   const itemLabel = courseCategory === 'cosmoenergetics' ? 'сеанса' : 'асани';
@@ -45,15 +58,15 @@ export default function CourseDetails({ course }) {
   }, [course?.id]);
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
+    <SafeAreaView style={stylesThemed.container} edges={['bottom']}>
       <ScrollView 
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.courseHeader}>
-          <Text style={styles.courseTitle}>{course.title}</Text>
+        <View style={stylesThemed.courseHeader}>
+          <Text style={stylesThemed.courseTitle}>{course.title}</Text>
           <View style={styles.metaRow}>
-            <Text style={styles.metaText}>
+            <Text style={stylesThemed.metaText}>
               {(() => {
                 // Парсваме duration - може да е число или текст
                 const getDuration = () => {
@@ -82,17 +95,17 @@ export default function CourseDetails({ course }) {
             </Text>
           </View>
           {course.description && (
-            <Text style={styles.description}>{course.description}</Text>
+            <Text style={stylesThemed.description}>{course.description}</Text>
           )}
-          <Text style={styles.asanaCount}>{asanas.length} {itemLabel}</Text>
+          <Text style={stylesThemed.asanaCount}>{asanas.length} {itemLabel}</Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{sectionTitle}</Text>
+          <Text style={stylesThemed.sectionTitle}>{sectionTitle}</Text>
           {loading ? (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#9B59B6" />
-              <Text style={styles.loadingText}>{loadingText}</Text>
+              <ActivityIndicator size="large" color={theme.colors.primary} />
+              <Text style={stylesThemed.loadingText}>{loadingText}</Text>
             </View>
           ) : error ? (
             <EmptyState
@@ -118,66 +131,8 @@ export default function CourseDetails({ course }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f8f8',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  courseHeader: {
-    backgroundColor: '#fff',
-    padding: 20,
-    marginBottom: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  courseTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#333',
-    marginBottom: 12,
-  },
-  metaRow: {
-    marginBottom: 12,
-  },
-  metaText: {
-    fontSize: 14,
-    color: '#666',
-    textTransform: 'capitalize',
-  },
-  description: {
-    fontSize: 15,
-    color: '#555',
-    lineHeight: 22,
-    marginBottom: 12,
-  },
-  asanaCount: {
-    fontSize: 14,
-    color: '#9B59B6',
-    fontWeight: '600',
-  },
-  section: {
-    padding: 16,
-    paddingBottom: 8,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#333',
-    marginBottom: 12,
-  },
-  loadingContainer: {
-    padding: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loadingText: {
-    marginTop: 12,
-    fontSize: 14,
-    color: '#666',
-  },
+  scrollView: { flex: 1 },
+  metaRow: { marginBottom: 12 },
+  section: { padding: 16, paddingBottom: 8 },
+  loadingContainer: { padding: 40, alignItems: 'center', justifyContent: 'center' },
 });

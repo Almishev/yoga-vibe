@@ -1,8 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, RefreshControl, ActivityIndicator, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useTheme } from '../contexts/theme';
 import { getAllCourses } from '../services/courseService';
 import { getAsanasByCourseId } from '../services/asanaService';
 import CourseListItem from '../componenets/CourseListItem';
@@ -10,6 +10,7 @@ import EmptyState from '../componenets/EmptyState';
 
 export default function CoursesScreen() {
   const navigation = useNavigation();
+  const { theme } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -61,34 +62,61 @@ export default function CoursesScreen() {
     loadCourses();
   };
 
+  const stylesThemed = useMemo(() => ({
+    container: { flex: 1, backgroundColor: theme.colors.background },
+    header: {
+      backgroundColor: theme.colors.primary,
+      padding: 24,
+      paddingTop: 16,
+      paddingBottom: 28,
+      borderBottomLeftRadius: 24,
+      borderBottomRightRadius: 24,
+    },
+    headerTitle: { fontSize: 28, fontWeight: 'bold', color: theme.colors.onPrimary, marginBottom: 8 },
+    headerSubtitle: { fontSize: 14, color: theme.colors.onPrimary, opacity: 0.9 },
+    tab: {
+      flex: 1,
+      paddingVertical: 12,
+      paddingHorizontal: 16,
+      borderRadius: 8,
+      backgroundColor: theme.colors.surface,
+      alignItems: 'center',
+      borderWidth: 2,
+      borderColor: theme.colors.border,
+    },
+    tabActive: { backgroundColor: theme.colors.primary, borderColor: theme.colors.primary },
+    tabText: { fontSize: 14, fontWeight: '600', color: theme.colors.textSecondary },
+    tabTextActive: { color: theme.colors.onPrimary },
+  }), [theme]);
+
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
+    <SafeAreaView style={stylesThemed.container} edges={['bottom']}>
       <ScrollView
         style={styles.scrollView}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Yoga Vibe</Text>
-          <Text style={styles.headerSubtitle}>
+        <View style={stylesThemed.header}>
+          <Text style={stylesThemed.headerTitle}>Yoga Vibe</Text>
+          <Text style={stylesThemed.headerSubtitle}>
             {filteredCourses.length} {selectedCategory === 'yoga' ? 'йога' : 'космоенергетика'} курса
           </Text>
         </View>
 
         <View style={styles.tabsContainer}>
           <Pressable
-            style={[styles.tab, selectedCategory === 'yoga' && styles.tabActive]}
+            style={[stylesThemed.tab, selectedCategory === 'yoga' && stylesThemed.tabActive]}
             onPress={() => setSelectedCategory('yoga')}
           >
-            <Text style={[styles.tabText, selectedCategory === 'yoga' && styles.tabTextActive]}>
+            <Text style={[stylesThemed.tabText, selectedCategory === 'yoga' && stylesThemed.tabTextActive]}>
               🧘‍♀️ Йога
             </Text>
           </Pressable>
           <Pressable
-            style={[styles.tab, selectedCategory === 'cosmoenergetics' && styles.tabActive]}
+            style={[stylesThemed.tab, selectedCategory === 'cosmoenergetics' && stylesThemed.tabActive]}
             onPress={() => setSelectedCategory('cosmoenergetics')}
           >
-            <Text style={[styles.tabText, selectedCategory === 'cosmoenergetics' && styles.tabTextActive]}>
+            <Text style={[stylesThemed.tabText, selectedCategory === 'cosmoenergetics' && stylesThemed.tabTextActive]}>
               🌌 Космоенергетика
             </Text>
           </Pressable>
@@ -97,8 +125,8 @@ export default function CoursesScreen() {
         <View style={styles.section}>
           {loading ? (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#9B59B6" />
-              <Text style={styles.loadingText}>Зареждане на курсове...</Text>
+              <ActivityIndicator size="large" color={theme.colors.primary} />
+              <Text style={[styles.loadingText, { color: theme.colors.textSecondary }]}>Зареждане на курсове...</Text>
             </View>
           ) : error ? (
             <EmptyState
@@ -124,38 +152,13 @@ export default function CoursesScreen() {
           )}
         </View>
       </ScrollView>
-      
-      <StatusBar style="auto" />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f8f8',
-  },
   scrollView: {
     flex: 1,
-  },
-  header: {
-    backgroundColor: '#9B59B6',
-    padding: 24,
-    paddingTop: 16,
-    paddingBottom: 28,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-  },
-  headerTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 8,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    color: '#fff',
-    opacity: 0.9,
   },
   section: {
     padding: 16,
@@ -169,7 +172,6 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 12,
     fontSize: 14,
-    color: '#666',
   },
   tabsContainer: {
     flexDirection: 'row',
@@ -177,27 +179,5 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 8,
     gap: 12,
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#e0e0e0',
-  },
-  tabActive: {
-    backgroundColor: '#9B59B6',
-    borderColor: '#9B59B6',
-  },
-  tabText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#666',
-  },
-  tabTextActive: {
-    color: '#fff',
   },
 });
