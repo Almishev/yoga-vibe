@@ -6,7 +6,7 @@ This privacy policy applies to the mobile application **vasilena-markova-yoga-vi
 
 ## 1. Who we are
 
-This app is made for **Vasilena Markova**, yoga teacher. The app helps users practice yoga at home with courses and poses (asanas). For technical and hosting purposes, the app uses services provided by Google (Firebase) and Expo.
+This app is made for **Vasilena Markova**, yoga teacher. The app helps users practice **yoga** at home (courses and poses/asanas) and access **cosmoenergetics** (космоенергетика) content. For technical and hosting purposes, the app uses services provided by Google (Firebase) and Expo.
 
 ## 2. Information we collect
 
@@ -24,7 +24,7 @@ We do **not** sell your data to third parties.
 
 ## 3. How we use your information
 
-- To provide and improve the app (courses, progress, profile).
+- To provide and improve the app (yoga and cosmoenergetics courses, progress, profile).
 - To send push notifications about new content, if you have allowed notifications.
 - To keep your account secure and allow you to sign in on your devices.
 
@@ -54,4 +54,4 @@ If you have questions about this privacy policy or your data, you can contact:
 
 ---
 
-*This app is developed as part of a SoftUni React Native course and is made for Vasilena Markova, yoga teacher.*
+*This app is developed as part of a SoftUni React Native course and is made for Vasilena Markova, yoga and cosmoenergetics teacher.*
