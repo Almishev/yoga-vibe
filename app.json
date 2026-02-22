@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Yoga-Vibe",
-    "slug": "Yoga-Vibe",
+    "name": "vasilena-markova-yoga-vibe",
+    "slug": "vasilena-markova-yoga-vibe",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo-yoga-app.png",
@@ -15,10 +15,14 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["remote-notification"]
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
       }
     },
     "android": {
+      "package": "com.vasilenamarkova.yogavibe",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo-yoga-app.png",
         "backgroundColor": "#ffffff"
@@ -40,6 +44,12 @@
     ],
     "web": {
       "favicon": "./assets/logo-yoga-app.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8a8ad70c-5d3b-4a2d-b95c-1b85043aed91"
+      }
+    },
+    "owner": "almishev"
   }
 }

@@ -36,9 +36,9 @@ export const initializeNotifications = async () => {
 
 export const registerPushToken = async () => {
   try {
-    const token = await Notifications.getExpoPushTokenAsync({
-      projectId: 'yoga-vibe-4bdc3',
-    });
+    // Expo expects projectId to be the EAS project UUID (from eas init), not Firebase ID.
+    // Leave empty so Expo uses extra.eas.projectId from app config after linking.
+    const token = await Notifications.getExpoPushTokenAsync();
 
     if (token?.data) {
       const tokenId = token.data.replace(/[^a-zA-Z0-9]/g, '_');

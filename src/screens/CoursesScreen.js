@@ -117,7 +117,7 @@ export default function CoursesScreen() {
             onPress={() => setSelectedCategory('cosmoenergetics')}
           >
             <Text style={[stylesThemed.tabText, selectedCategory === 'cosmoenergetics' && stylesThemed.tabTextActive]}>
-              🌌 Космоенергетика
+               Космоенергетика
             </Text>
           </Pressable>
         </View>

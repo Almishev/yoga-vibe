@@ -93,9 +93,13 @@ Authenticated users gain additional functionality, such as the ability to mark c
 - Firebase Authentication
 - Firebase Firestore
 
-This project is developed as part of a SoftUni React Native course , maden for Veselina Markova yoga teacher and follows modern best practices for mobile application architecture, navigation, and state management.
+This project is developed as part of a SoftUni React Native course , made for Vasilena Markova yoga teacher and follows modern best practices for mobile application architecture, navigation, and state management.
 
 
 ## Backend for this yoga app:  https://yoga-vibe-admin.web.app
 web admin panel 
 https://github.com/Almishev/yoga-app-admin
+
+
+## Build file .aab
+https://expo.dev/artifacts/eas/dDihBtxWdfwYR3ZKCzLJep.aab
