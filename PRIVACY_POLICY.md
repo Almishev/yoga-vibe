@@ -41,6 +41,8 @@ You can:
 - Refuse or disable push notifications at any time.
 - Request access to or deletion of your personal data by contacting us.
 
+**Request deletion of your profile and data:** To request that your account and all associated data (profile, progress, photo) be deleted, send an email to **antonalmishev123@gmail.com** with the subject “Delete my account” and the email address you used in the app. We will process your request and confirm once the data has been removed.
+
 ## 6. Changes to this policy
 
 We may update this privacy policy from time to time. The “Last updated” date at the top will be changed when we do. Continued use of the app after changes means you accept the updated policy.
