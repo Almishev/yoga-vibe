@@ -1,6 +1,6 @@
 # Privacy Policy — vasilena-markova-yoga-vibe
 
-**Last updated:** February 2025
+**Last updated:** February 2026
 
 This privacy policy applies to the mobile application **vasilena-markova-yoga-vibe** (Vasilena Markova Yoga), available on Android and other platforms.
 
