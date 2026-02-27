@@ -20,7 +20,7 @@ export default function Register({ onSubmit, onGoToLogin, loading = false }) {
   return (
     <KeyboardAvoidingView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior="padding"
     >
       <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
         <Image

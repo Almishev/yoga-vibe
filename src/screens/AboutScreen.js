@@ -48,7 +48,11 @@ export default function AboutScreen() {
             />
           </View>
           <Text style={stylesThemed.name}>Василена Маркова</Text>
-          <Text style={stylesThemed.followers}>Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis.</Text>
+          <Text style={stylesThemed.followers}>
+  Водя практики по йога и космоенергетика, в които съчетавам движение, дишане и енергийна работа, 
+  за да помогна на хората да освободят напрежението, да се свържат с вътрешната си сила и да внесат 
+  повече спокойствие и яснота в ежедневието си.
+</Text>
           <Text style={stylesThemed.tagline}>Път към твоята собствена магия</Text>
         </View>
 

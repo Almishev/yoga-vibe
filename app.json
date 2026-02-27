@@ -2,7 +2,7 @@
   "expo": {
     "name": "vasilena-markova-yoga-vibe",
     "slug": "vasilena-markova-yoga-vibe",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/logo-yoga-app.png",
     "userInterfaceStyle": "automatic",
@@ -22,7 +22,8 @@
     },
     "android": {
       "package": "com.vasilenamarkova.yogavibe",
-      "versionCode": 1,
+      "versionCode": 3,
+    "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo-yoga-app.png",
         "backgroundColor": "#ffffff"
