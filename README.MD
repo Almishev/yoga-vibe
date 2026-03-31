@@ -1,5 +1,10 @@
 # Yoga Vibe
 
+## APK (Exam Requirement)
+
+Functional Android APK (public install link):  
+https://expo.dev/accounts/almishev/projects/vasilena-markova-yoga-vibe/builds/781f4c6b-f451-4ac4-b77f-7d22c3c50f84
+
 Yoga Vibe is a mobile application built with React Native, Expo and Firebase, designed to help users practice yoga at home in a simple and structured way.  
 It is developed as part of a **SoftUni React Native course** for yoga teacher **Vasilena Markova** and follows modern best practices for mobile architecture, navigation and state management.  
 
