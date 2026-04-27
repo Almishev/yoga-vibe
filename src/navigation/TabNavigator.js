@@ -1,7 +1,9 @@
 import React from 'react';
+import { Platform, View } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/auth';
 import { useTheme } from '../contexts/theme';
 import HomeStackNavigator from './HomeStackNavigator';
@@ -14,6 +16,10 @@ const Tab = createBottomTabNavigator();
 export default function TabNavigator() {
   const { isAuthenticated } = useAuth();
   const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
+
+  const webBottomInset = Platform.OS === 'web' ? Math.max(insets.bottom, 12) : 0;
+  const TABBAR_CONTENT = 49;
 
   return (
     <Tab.Navigator
@@ -22,7 +28,17 @@ export default function TabNavigator() {
         tabBarStyle: {
           backgroundColor: theme.colors.surface,
           borderTopColor: theme.colors.border,
+          ...(Platform.OS === 'web'
+            ? {
+                paddingBottom: webBottomInset,
+                height: TABBAR_CONTENT + webBottomInset,
+              }
+            : {}),
         },
+        ...(Platform.OS === 'web' && {
+          tabBarIconStyle: { overflow: 'visible' },
+        }),
+        tabBarAllowFontScaling: false,
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.textSecondary,
         tabBarIcon: ({ color, size }) => {
@@ -38,7 +54,32 @@ export default function TabNavigator() {
             iconName = isAuthenticated ? 'log-out-outline' : 'log-in-outline';
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
+          const iconSize = typeof size === 'number' && size > 0 ? size : 24;
+          const glyph = (
+            <Ionicons
+              name={iconName}
+              size={iconSize}
+              color={color}
+              allowFontScaling={false}
+            />
+          );
+
+          if (Platform.OS === 'web') {
+            return (
+              <View
+                style={{
+                  width: iconSize + 4,
+                  height: iconSize + 4,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {glyph}
+              </View>
+            );
+          }
+
+          return glyph;
         },
       })}
     >
