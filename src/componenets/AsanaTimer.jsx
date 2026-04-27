@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { StyleSheet, Text, View, Pressable, Vibration } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Vibration, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/theme';
 
@@ -25,7 +25,11 @@ export default function AsanaTimer({ initialSeconds, onComplete, isCosmoenergeti
           if (prevSeconds <= 1) {
             setIsRunning(false);
             setIsCompleted(true);
-            Vibration.vibrate(400);
+            if (Platform.OS === 'web' && typeof navigator !== 'undefined' && navigator.vibrate) {
+              navigator.vibrate(400);
+            } else if (Platform.OS !== 'web') {
+              Vibration.vibrate(400);
+            }
             if (onComplete) {
               onComplete();
             }

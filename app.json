@@ -44,7 +44,17 @@
       ]
     ],
     "web": {
-      "favicon": "./assets/logo-yoga-app.png"
+      "favicon": "./assets/logo-yoga-app.png",
+      "name": "Yoga Vibe",
+      "shortName": "Yoga Vibe",
+      "lang": "bg",
+      "description": "Практикуй йога у дома с курсове и асани.",
+      "display": "standalone",
+      "orientation": "portrait",
+      "themeColor": "#9B59B6",
+      "backgroundColor": "#9B59B6",
+      "startUrl": "/",
+      "bundler": "metro"
     },
     "extra": {
       "eas": {

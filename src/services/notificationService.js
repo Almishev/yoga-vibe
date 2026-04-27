@@ -1,16 +1,22 @@
+import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { doc, setDoc } from 'firebase/firestore';
 import { db, auth } from './firebase';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
+if (Platform.OS !== 'web') {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  });
+}
 
 export const initializeNotifications = async () => {
+  if (Platform.OS === 'web') {
+    return false;
+  }
   try {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
@@ -35,6 +41,9 @@ export const initializeNotifications = async () => {
 };
 
 export const registerPushToken = async () => {
+  if (Platform.OS === 'web') {
+    return;
+  }
   try {
     // Expo expects projectId to be the EAS project UUID (from eas init), not Firebase ID.
     // Leave empty so Expo uses extra.eas.projectId from app config after linking.
