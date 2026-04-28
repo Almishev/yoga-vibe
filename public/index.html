@@ -6,12 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
     <title>%WEB_TITLE%</title>
     <link rel="manifest" href="/manifest.json" />
+    <link rel="preload" href="/ionicons.ttf" as="font" type="font/ttf" crossorigin />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Yoga Vibe" />
     <link rel="apple-touch-icon" href="/pwa-icon.png" />
     <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
     <style id="expo-reset">
+      @font-face {
+        font-family: 'ionicons';
+        src: url('/ionicons.ttf') format('truetype');
+        font-display: block;
+      }
       /* These styles make the body full-height */
       html,
       body {

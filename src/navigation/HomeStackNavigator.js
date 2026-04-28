@@ -1,5 +1,7 @@
 import React from 'react';
+import { Platform, Pressable } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../contexts/theme';
 import HomeScreen from '../screens/HomeScreen';
@@ -15,7 +17,7 @@ export default function HomeStackNavigator() {
 
   return (
     <HomeStack.Navigator
-      screenOptions={{
+      screenOptions={({ navigation }) => ({
         gestureEnabled: true,
         fullScreenGestureEnabled: true,
         headerShadowVisible: false,
@@ -27,7 +29,28 @@ export default function HomeStackNavigator() {
         headerTitleStyle: { color: theme.colors.text },
         contentStyle: { backgroundColor: theme.colors.background },
         headerStatusBarHeight: insets.top,
-      }}
+        ...(Platform.OS === 'web'
+          ? {
+              headerBackVisible: false,
+              headerLeft: () =>
+                navigation.canGoBack() ? (
+                  <Pressable
+                    onPress={() => navigation.goBack()}
+                    style={{ paddingRight: 8, paddingVertical: 4 }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Назад"
+                  >
+                    <Ionicons
+                      name="chevron-back"
+                      size={24}
+                      color={theme.colors.text}
+                      allowFontScaling={false}
+                    />
+                  </Pressable>
+                ) : null,
+            }
+          : {}),
+      })}
     >
       <HomeStack.Screen 
         name="Home" 
