@@ -85,7 +85,7 @@ export default function TabNavigator() {
     >
       <Tab.Screen 
         name="HomeTab" 
-        options={{ title: 'Home' }}
+        options={{ title: 'Начало', tabBarLabel: 'Начало' }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             const state = navigation.getState();
@@ -114,18 +114,21 @@ export default function TabNavigator() {
       </Tab.Screen>
       <Tab.Screen 
         name="AboutTab" 
-        options={{ title: 'За нас' }}
+        options={{ title: 'За нас', tabBarLabel: 'За нас' }}
         component={AboutScreen}
       />
       <Tab.Screen 
         name="ProfileTab" 
-        options={{ title: 'Профил' }}
+        options={{ title: 'Профил', tabBarLabel: 'Профил' }}
       >
         {() => <ProfileStackNavigator />}
       </Tab.Screen>
       <Tab.Screen 
         name="AuthTab" 
-        options={{ title: isAuthenticated ? 'LogOut' : 'Login' }}
+        options={{
+          title: isAuthenticated ? 'Изход' : 'Вход',
+          tabBarLabel: isAuthenticated ? 'Изход' : 'Вход',
+        }}
       >
         {() => <AuthStackNavigator />}
       </Tab.Screen>
